@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📚 Biblioteca Digital - Clean Architecture</title>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; background: #f8fafc; color: #334155; }
@@ -20,8 +19,6 @@
         
         /* Hero Section */
         .hero { margin-top: 80px; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 100px 20px; border-radius: 20px; margin-bottom: 60px; position: relative; overflow: hidden; }
-        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>'); }
-        .hero-content { position: relative; z-index: 1; }
         .hero h1 { font-size: 4.5em; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
         .hero .subtitle { font-size: 1.8em; margin-bottom: 30px; opacity: 0.95; }
         .hero .description { font-size: 1.3em; margin-bottom: 40px; max-width: 900px; margin-left: auto; margin-right: auto; opacity: 0.9; }
@@ -36,6 +33,66 @@
         .section { margin: 80px 0; }
         .section-title { font-size: 3em; text-align: center; margin-bottom: 50px; color: #1e293b; position: relative; }
         .section-title::after { content: ''; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 100px; height: 4px; background: linear-gradient(90deg, #3b82f6, #8b5cf6); border-radius: 2px; }
+        
+        /* Clean Architecture Diagram */
+        .clean-arch-diagram { display: flex; justify-content: center; align-items: center; margin: 50px 0; min-height: 500px; }
+        .arch-circles { position: relative; width: 500px; height: 500px; }
+        .arch-circle { position: absolute; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-align: center; font-weight: bold; color: white; cursor: pointer; transition: all 0.3s; }
+        .arch-circle:hover { transform: scale(1.05); }
+        .domain-circle { width: 150px; height: 150px; background: linear-gradient(135deg, #10b981, #059669); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 4; }
+        .application-circle { width: 250px; height: 250px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3; opacity: 0.9; }
+        .infrastructure-circle { width: 350px; height: 350px; background: linear-gradient(135deg, #f59e0b, #d97706); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; opacity: 0.8; }
+        .presentation-circle { width: 450px; height: 450px; background: linear-gradient(135deg, #ef4444, #dc2626); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; opacity: 0.7; }
+        
+        /* C4 Tabs */
+        .c4-tabs { margin: 40px 0; }
+        .tab-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; justify-content: center; }
+        .tab-btn { background: #f1f5f9; border: 2px solid #e2e8f0; padding: 12px 20px; border-radius: 10px; cursor: pointer; transition: all 0.3s; font-weight: 600; }
+        .tab-btn:hover { background: #e2e8f0; }
+        .tab-btn.active { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border-color: #1d4ed8; }
+        .tab-content { margin-top: 30px; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        
+        /* C4 Diagrams */
+        .c4-diagram { background: white; border-radius: 15px; padding: 40px; margin: 30px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .diagram-title { font-size: 1.8em; color: #1e293b; margin-bottom: 30px; text-align: center; }
+        
+        /* Context Diagram */
+        .context-diagram { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 30px; align-items: center; min-height: 400px; }
+        .actors { display: flex; flex-direction: column; gap: 20px; }
+        .actor { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; padding: 20px; border-radius: 12px; text-align: center; }
+        .system-center { display: flex; align-items: center; justify-content: center; }
+        .main-system { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 40px; border-radius: 20px; text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center; }
+        .external-systems { display: flex; flex-direction: column; gap: 20px; }
+        .external-system { background: linear-gradient(135deg, #64748b, #475569); color: white; padding: 20px; border-radius: 12px; text-align: center; }
+        
+        /* Container Diagram */
+        .container-diagram { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+        .container-item { background: linear-gradient(135deg, #f8fafc, #e2e8f0); border: 2px solid #e2e8f0; padding: 30px; border-radius: 15px; text-align: center; transition: all 0.3s; }
+        .container-item:hover { transform: translateY(-5px); border-color: #3b82f6; }
+        .container-item h4 { color: #1e293b; margin-bottom: 15px; }
+        .webapp { border-left: 6px solid #3b82f6; }
+        .api { border-left: 6px solid #10b981; }
+        .database { border-left: 6px solid #8b5cf6; }
+        .cache { border-left: 6px solid #f59e0b; }
+        
+        /* Component Diagram */
+        .component-diagram { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .component-layer { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .layer-presentation { border-top: 4px solid #ef4444; }
+        .layer-application { border-top: 4px solid #8b5cf6; }
+        .layer-infrastructure { border-top: 4px solid #f59e0b; }
+        .layer-domain { border-top: 4px solid #10b981; }
+        .component-item { background: #f8fafc; padding: 10px; margin: 8px 0; border-radius: 6px; font-size: 0.9em; text-align: center; }
+        
+        /* Code Diagram */
+        .code-diagram { display: flex; justify-content: center; align-items: center; }
+        .class-diagram { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 900px; }
+        .class-box { background: white; border: 2px solid #e2e8f0; border-radius: 10px; overflow: hidden; }
+        .class-header { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 15px; text-align: center; font-weight: bold; }
+        .class-body { padding: 15px; }
+        .class-method { background: #f8fafc; padding: 8px; margin: 5px 0; border-radius: 4px; font-size: 0.85em; }
         
         /* Architecture Cards */
         .arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin: 50px 0; }
@@ -55,25 +112,6 @@
         .infrastructure .badge { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .presentation .badge { background: linear-gradient(135deg, #ef4444, #dc2626); }
         
-        /* Diagram Container */
-        .diagram-container { background: white; border-radius: 15px; padding: 30px; margin: 40px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-        .diagram-title { font-size: 1.5em; color: #1e293b; margin-bottom: 20px; text-align: center; }
-        .mermaid { background: #fafafa; border-radius: 10px; padding: 20px; }
-        
-        /* C4 Tabs */
-        .c4-tabs { margin: 40px 0; }
-        .tab-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; justify-content: center; }
-        .tab-btn { background: #f1f5f9; border: 2px solid #e2e8f0; padding: 12px 20px; border-radius: 10px; cursor: pointer; transition: all 0.3s; font-weight: 600; }
-        .tab-btn:hover { background: #e2e8f0; }
-        .tab-btn.active { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border-color: #1d4ed8; }
-        .tab-content { margin-top: 30px; }
-        .tab-panel { display: none; }
-        .tab-panel.active { display: block; }
-        .level-description { background: #f8fafc; padding: 25px; border-radius: 12px; margin-top: 20px; }
-        .level-description h4 { color: #1e293b; margin-bottom: 15px; }
-        .level-description ul { margin-top: 15px; }
-        .level-description li { margin: 8px 0; }
-        
         /* Features Grid */
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
         .feature-card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.06); border-left: 5px solid #3b82f6; transition: all 0.3s; }
@@ -92,14 +130,6 @@
         .tech-item { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-left: 4px solid #3b82f6; }
         .tech-item strong { color: #1e293b; display: block; margin-bottom: 5px; }
         
-        /* Code Example */
-        .code-container { background: #1e293b; color: #e2e8f0; border-radius: 12px; padding: 25px; margin: 30px 0; overflow-x: auto; }
-        .code-title { color: #60a5fa; margin-bottom: 15px; font-weight: 600; }
-        pre { margin: 0; font-family: 'Monaco', 'Menlo', monospace; font-size: 0.9em; line-height: 1.5; }
-        .keyword { color: #c792ea; }
-        .string { color: #c3e88d; }
-        .comment { color: #546e7a; }
-        
         /* Footer */
         .footer { background: linear-gradient(135deg, #1e293b, #334155); color: white; padding: 60px 20px; border-radius: 20px; text-align: center; margin-top: 80px; }
         .footer h3 { margin-bottom: 20px; font-size: 2em; }
@@ -112,11 +142,16 @@
             .nav-links { display: none; }
             .arch-grid { grid-template-columns: 1fr; }
             .section-title { font-size: 2.2em; }
+            .context-diagram { grid-template-columns: 1fr; }
+            .container-diagram { grid-template-columns: 1fr; }
+            .component-diagram { grid-template-columns: repeat(2, 1fr); }
+            .class-diagram { grid-template-columns: 1fr; }
+            .arch-circles { width: 300px; height: 300px; }
+            .domain-circle { width: 100px; height: 100px; }
+            .application-circle { width: 150px; height: 150px; }
+            .infrastructure-circle { width: 200px; height: 200px; }
+            .presentation-circle { width: 250px; height: 250px; }
         }
-        
-        /* Animations */
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeInUp 0.6s ease-out; }
     </style>
 </head>
 <body>
@@ -135,84 +170,41 @@
 
     <div class="container">
         <!-- Hero Section -->
-        <section class="hero fade-in">
-            <div class="hero-content">
-                <h1>📚 Biblioteca Digital</h1>
-                <div class="subtitle">Clean Architecture + Modelo C4</div>
-                <div class="description">
-                    Sistema completo de gestión de bibliotecas digitales implementando los principios de 
-                    <strong>Arquitectura Limpia</strong> de Robert C. Martin y documentado con el <strong>Modelo C4</strong>
-                </div>
-                <a href="https://github.com/Edwinramirezgon/biblioteca-digital-clean-architecture" class="btn btn-primary">🚀 Ver Código Completo</a>
-                <a href="#arquitectura" class="btn btn-secondary">📖 Explorar Arquitectura</a>
+        <section class="hero">
+            <h1>📚 Biblioteca Digital</h1>
+            <div class="subtitle">Clean Architecture + Modelo C4</div>
+            <div class="description">
+                Sistema completo de gestión de bibliotecas digitales implementando los principios de 
+                <strong>Arquitectura Limpia</strong> de Robert C. Martin y documentado con el <strong>Modelo C4</strong>
             </div>
+            <a href="https://github.com/Edwinramirezgon/biblioteca-digital-clean-architecture" class="btn btn-primary">🚀 Ver Código Completo</a>
+            <a href="#arquitectura" class="btn btn-secondary">📖 Explorar Arquitectura</a>
         </section>
 
         <!-- Arquitectura Section -->
         <section class="section" id="arquitectura">
-            <h2 class="section-title">🏗️ Arquitectura en Capas Concéntricas</h2>
+            <h2 class="section-title">🏗️ Arquitectura Limpia - Capas Concéntricas</h2>
             
-            <div class="diagram-container">
-                <div class="diagram-title">Diagrama de Dependencias - Clean Architecture</div>
-                <div class="mermaid">
-                graph TB
-                    subgraph "🖥️ PRESENTACIÓN"
-                        P1[Controllers]
-                        P2[Routes] 
-                        P3[Middleware]
-                    end
-                    
-                    subgraph "🔧 INFRAESTRUCTURA"
-                        I1[PostgreSQL Repositories]
-                        I2[External Services]
-                        I3[Email Service]
-                        I4[Payment Service]
-                    end
-                    
-                    subgraph "📋 APLICACIÓN"
-                        A1[BorrowBookUseCase]
-                        A2[SearchBooksUseCase]
-                        A3[ReserveBookUseCase]
-                        A4[Service Interfaces]
-                    end
-                    
-                    subgraph "🎯 DOMINIO"
-                        D1[User Entity]
-                        D2[Book Entity]
-                        D3[Loan Entity]
-                        D4[Repository Interfaces]
-                    end
-                    
-                    P1 --> A1
-                    P2 --> A2
-                    P3 --> A3
-                    I1 -.-> D4
-                    I2 -.-> A4
-                    I3 -.-> A4
-                    I4 -.-> A4
-                    A1 --> D1
-                    A1 --> D2
-                    A2 --> D2
-                    A3 --> D1
-                    A1 --> D4
-                    A2 --> D4
-                    A3 --> D4
-                    
-                    style D1 fill:#10b981,stroke:#059669,color:#fff
-                    style D2 fill:#10b981,stroke:#059669,color:#fff
-                    style D3 fill:#10b981,stroke:#059669,color:#fff
-                    style D4 fill:#10b981,stroke:#059669,color:#fff
-                    style A1 fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                    style A2 fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                    style A3 fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                    style A4 fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                    style I1 fill:#f59e0b,stroke:#d97706,color:#fff
-                    style I2 fill:#f59e0b,stroke:#d97706,color:#fff
-                    style I3 fill:#f59e0b,stroke:#d97706,color:#fff
-                    style I4 fill:#f59e0b,stroke:#d97706,color:#fff
-                    style P1 fill:#ef4444,stroke:#dc2626,color:#fff
-                    style P2 fill:#ef4444,stroke:#dc2626,color:#fff
-                    style P3 fill:#ef4444,stroke:#dc2626,color:#fff
+            <div class="clean-arch-diagram">
+                <div class="arch-circles">
+                    <div class="arch-circle presentation-circle">
+                        <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%);">
+                            🖥️<br>PRESENTACIÓN
+                        </div>
+                    </div>
+                    <div class="arch-circle infrastructure-circle">
+                        <div style="position: absolute; top: 40px; left: 50%; transform: translateX(-50%);">
+                            🔧<br>INFRAESTRUCTURA
+                        </div>
+                    </div>
+                    <div class="arch-circle application-circle">
+                        <div style="position: absolute; top: 60px; left: 50%; transform: translateX(-50%);">
+                            📋<br>APLICACIÓN
+                        </div>
+                    </div>
+                    <div class="arch-circle domain-circle">
+                        🎯<br>DOMINIO
+                    </div>
                 </div>
             </div>
 
@@ -259,7 +251,6 @@
         <section class="section" id="c4-model">
             <h2 class="section-title">📊 Modelo C4 - Documentación en 4 Niveles</h2>
             
-            <!-- C4 Tabs -->
             <div class="c4-tabs">
                 <div class="tab-buttons">
                     <button class="tab-btn active" onclick="showTab('nivel1')">🌍 Nivel 1: Contexto</button>
@@ -271,255 +262,155 @@
                 <div class="tab-content">
                     <!-- Nivel 1: Contexto -->
                     <div id="nivel1" class="tab-panel active">
-                        <div class="diagram-container">
+                        <div class="c4-diagram">
                             <div class="diagram-title">Nivel 1: Diagrama de Contexto del Sistema</div>
-                            <div class="mermaid">
-                            flowchart TB
-                                subgraph "Actores Externos"
-                                    R[👤 Lectores<br/>Buscan y leen libros]
-                                    A[👨💼 Administradores<br/>Gestionan sistema]
-                                end
+                            <div class="context-diagram">
+                                <div class="actors">
+                                    <div class="actor">
+                                        <h4>👤 Lectores</h4>
+                                        <p>Usuarios que buscan, reservan y leen libros</p>
+                                    </div>
+                                    <div class="actor">
+                                        <h4>👨‍💼 Administradores</h4>
+                                        <p>Personal que gestiona inventario y políticas</p>
+                                    </div>
+                                </div>
                                 
-                                subgraph "Sistema Principal"
-                                    S[📚 Sistema de Biblioteca Digital<br/>Gestiona préstamos, reservas y lectura]
-                                end
+                                <div class="system-center">
+                                    <div class="main-system">
+                                        <h3>📚 Sistema de Biblioteca Digital</h3>
+                                        <p>Gestiona préstamos, reservas, búsquedas y lectura de libros físicos y digitales</p>
+                                    </div>
+                                </div>
                                 
-                                subgraph "Sistemas Externos"
-                                    CP[📖 Proveedor de Contenido<br/>Libros digitales]
-                                    PG[💳 Pasarela de Pago<br/>Stripe]
-                                    ES[📧 Servicio de Email<br/>SendGrid]
-                                end
-                                
-                                R -.-> S
-                                A -.-> S
-                                S -.-> CP
-                                S -.-> PG
-                                S -.-> ES
-                                
-                                style R fill:#3b82f6,stroke:#1d4ed8,color:#fff
-                                style A fill:#10b981,stroke:#059669,color:#fff
-                                style S fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                                style CP fill:#f59e0b,stroke:#d97706,color:#fff
-                                style PG fill:#ef4444,stroke:#dc2626,color:#fff
-                                style ES fill:#06b6d4,stroke:#0891b2,color:#fff
-                            </div>
-                            <div class="level-description">
-                                <h4>🎯 Propósito del Nivel 1</h4>
-                                <p>Muestra el sistema como una caja negra y cómo interactúa con usuarios y sistemas externos.</p>
-                                <ul>
-                                    <li><strong>Lectores:</strong> Usuarios finales que buscan, reservan y leen libros</li>
-                                    <li><strong>Administradores:</strong> Personal que gestiona inventario y políticas</li>
-                                    <li><strong>Sistemas Externos:</strong> Proveedores de contenido, pagos y notificaciones</li>
-                                </ul>
+                                <div class="external-systems">
+                                    <div class="external-system">
+                                        <h4>📖 Proveedor de Contenido</h4>
+                                        <p>Suministra libros digitales</p>
+                                    </div>
+                                    <div class="external-system">
+                                        <h4>💳 Pasarela de Pago</h4>
+                                        <p>Procesa pagos (Stripe)</p>
+                                    </div>
+                                    <div class="external-system">
+                                        <h4>📧 Servicio de Email</h4>
+                                        <p>Envía notificaciones</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Nivel 2: Contenedores -->
                     <div id="nivel2" class="tab-panel">
-                        <div class="diagram-container">
+                        <div class="c4-diagram">
                             <div class="diagram-title">Nivel 2: Diagrama de Contenedores</div>
-                            <div class="mermaid">
-                            flowchart TB
-                                subgraph "Usuarios"
-                                    U1[👤 Lectores]
-                                    U2[👨💼 Administradores]
-                                end
+                            <div class="container-diagram">
+                                <div class="container-item webapp">
+                                    <h4>🌐 Aplicación Web</h4>
+                                    <p><strong>Tecnología:</strong> React + TypeScript</p>
+                                    <p><strong>Función:</strong> Interfaz de usuario responsive para lectores y administradores</p>
+                                </div>
                                 
-                                subgraph "Sistema de Biblioteca Digital"
-                                    WA[🌐 Aplicación Web<br/>React + TypeScript<br/>SPA Responsive]
-                                    API[⚡ API REST<br/>Node.js + Express<br/>Clean Architecture]
-                                    DB[(🗄️ Base de Datos<br/>PostgreSQL<br/>Datos principales)]
-                                    CACHE[(⚡ Cache<br/>Redis<br/>Sesiones y búsquedas)]
-                                end
+                                <div class="container-item api">
+                                    <h4>⚡ API REST</h4>
+                                    <p><strong>Tecnología:</strong> Node.js + Express</p>
+                                    <p><strong>Función:</strong> Lógica de negocio con Clean Architecture</p>
+                                </div>
                                 
-                                subgraph "Servicios Externos"
-                                    CP[📖 Proveedor Contenido]
-                                    PG[💳 Stripe]
-                                    ES[📧 SendGrid]
-                                end
+                                <div class="container-item database">
+                                    <h4>🗄️ Base de Datos</h4>
+                                    <p><strong>Tecnología:</strong> PostgreSQL</p>
+                                    <p><strong>Función:</strong> Almacena usuarios, libros, préstamos y reservas</p>
+                                </div>
                                 
-                                U1 --> WA
-                                U2 --> WA
-                                WA --> API
-                                API --> DB
-                                API --> CACHE
-                                API --> CP
-                                API --> PG
-                                API --> ES
-                                
-                                style WA fill:#3b82f6,stroke:#1d4ed8,color:#fff
-                                style API fill:#10b981,stroke:#059669,color:#fff
-                                style DB fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                                style CACHE fill:#f59e0b,stroke:#d97706,color:#fff
-                            </div>
-                            <div class="level-description">
-                                <h4>🎯 Propósito del Nivel 2</h4>
-                                <p>Descompone el sistema en contenedores principales y muestra la arquitectura de alto nivel.</p>
-                                <ul>
-                                    <li><strong>Web App:</strong> Interfaz de usuario React con TypeScript</li>
-                                    <li><strong>API REST:</strong> Backend con Node.js implementando Clean Architecture</li>
-                                    <li><strong>PostgreSQL:</strong> Base de datos principal para persistencia</li>
-                                    <li><strong>Redis:</strong> Cache para sesiones y optimización de búsquedas</li>
-                                </ul>
+                                <div class="container-item cache">
+                                    <h4>⚡ Cache</h4>
+                                    <p><strong>Tecnología:</strong> Redis</p>
+                                    <p><strong>Función:</strong> Cache de sesiones y búsquedas frecuentes</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Nivel 3: Componentes -->
                     <div id="nivel3" class="tab-panel">
-                        <div class="diagram-container">
+                        <div class="c4-diagram">
                             <div class="diagram-title">Nivel 3: Componentes de la API REST</div>
-                            <div class="mermaid">
-                            flowchart TB
-                                subgraph "🖥️ Capa de Presentación"
-                                    BC[📚 BookController]
-                                    UC[👤 UserController]
-                                    AC[🔐 AuthController]
-                                    MW[🛡️ Middleware]
-                                end
+                            <div class="component-diagram">
+                                <div class="component-layer layer-presentation">
+                                    <h4>🖥️ Presentación</h4>
+                                    <div class="component-item">BookController</div>
+                                    <div class="component-item">UserController</div>
+                                    <div class="component-item">AuthController</div>
+                                    <div class="component-item">Middleware</div>
+                                </div>
                                 
-                                subgraph "📋 Capa de Aplicación"
-                                    BUC[📖 BorrowBookUseCase]
-                                    SUC[🔍 SearchBooksUseCase]
-                                    RUC[🔖 ReserveBookUseCase]
-                                    SI[🔌 Service Interfaces]
-                                end
+                                <div class="component-layer layer-application">
+                                    <h4>📋 Aplicación</h4>
+                                    <div class="component-item">BorrowBookUseCase</div>
+                                    <div class="component-item">SearchBooksUseCase</div>
+                                    <div class="component-item">ReserveBookUseCase</div>
+                                    <div class="component-item">Service Interfaces</div>
+                                </div>
                                 
-                                subgraph "🎯 Capa de Dominio"
-                                    UE[👤 User Entity]
-                                    BE[📚 Book Entity]
-                                    LE[📋 Loan Entity]
-                                    RI[🔌 Repository Interfaces]
-                                end
+                                <div class="component-layer layer-domain">
+                                    <h4>🎯 Dominio</h4>
+                                    <div class="component-item">User Entity</div>
+                                    <div class="component-item">Book Entity</div>
+                                    <div class="component-item">Loan Entity</div>
+                                    <div class="component-item">Repository Interfaces</div>
+                                </div>
                                 
-                                subgraph "🔧 Capa de Infraestructura"
-                                    UR[👤 UserRepository]
-                                    BR[📚 BookRepository]
-                                    LR[📋 LoanRepository]
-                                    ES[📧 EmailService]
-                                    PS[💳 PaymentService]
-                                end
-                                
-                                BC --> BUC
-                                BC --> SUC
-                                BC --> RUC
-                                UC --> BUC
-                                
-                                BUC --> UE
-                                BUC --> BE
-                                BUC --> LE
-                                SUC --> BE
-                                RUC --> UE
-                                
-                                BUC --> RI
-                                SUC --> RI
-                                RUC --> SI
-                                
-                                UR -.-> RI
-                                BR -.-> RI
-                                LR -.-> RI
-                                ES -.-> SI
-                                PS -.-> SI
-                                
-                                style BC fill:#ef4444,stroke:#dc2626,color:#fff
-                                style UC fill:#ef4444,stroke:#dc2626,color:#fff
-                                style AC fill:#ef4444,stroke:#dc2626,color:#fff
-                                style BUC fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                                style SUC fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                                style RUC fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                                style UE fill:#10b981,stroke:#059669,color:#fff
-                                style BE fill:#10b981,stroke:#059669,color:#fff
-                                style LE fill:#10b981,stroke:#059669,color:#fff
-                                style UR fill:#f59e0b,stroke:#d97706,color:#fff
-                                style BR fill:#f59e0b,stroke:#d97706,color:#fff
-                                style LR fill:#f59e0b,stroke:#d97706,color:#fff
-                            </div>
-                            <div class="level-description">
-                                <h4>🎯 Propósito del Nivel 3</h4>
-                                <p>Muestra los componentes dentro de la API REST organizados por capas de Clean Architecture.</p>
-                                <ul>
-                                    <li><strong>Controllers:</strong> Manejan requests HTTP y coordinan respuestas</li>
-                                    <li><strong>Use Cases:</strong> Implementan lógica de aplicación específica</li>
-                                    <li><strong>Entities:</strong> Encapsulan reglas de negocio del dominio</li>
-                                    <li><strong>Repositories:</strong> Abstraen el acceso a datos</li>
-                                </ul>
+                                <div class="component-layer layer-infrastructure">
+                                    <h4>🔧 Infraestructura</h4>
+                                    <div class="component-item">PostgreSQL Repos</div>
+                                    <div class="component-item">Email Service</div>
+                                    <div class="component-item">Payment Service</div>
+                                    <div class="component-item">External APIs</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Nivel 4: Código -->
                     <div id="nivel4" class="tab-panel">
-                        <div class="diagram-container">
-                            <div class="diagram-title">Nivel 4: Diagrama de Clases Detallado</div>
-                            <div class="mermaid">
-                            classDiagram
-                                class BorrowBookUseCase {
-                                    -IUserRepository userRepository
-                                    -IBookRepository bookRepository
-                                    -ILoanRepository loanRepository
-                                    +execute(userId: string, bookId: string) Promise~Loan~
-                                    -validateUser(user: User) void
-                                    -validateBook(book: Book) void
-                                }
-                                
-                                class IUserRepository {
-                                    <<interface>>
-                                    +findById(id: string) Promise~User~
-                                    +save(user: User) Promise~User~
-                                }
-                                
-                                class User {
-                                    -string id
-                                    -string email
-                                    -UserRole role
-                                    -MembershipType membershipType
-                                    +isPremium() boolean
-                                    +canBorrowBooks() boolean
-                                }
-                                
-                                class Book {
-                                    -string id
-                                    -string title
-                                    -BookFormat format
-                                    -BookStatus status
-                                    -number availableCopies
-                                    +isAvailable() boolean
-                                    +requiresPremium() boolean
-                                }
-                                
-                                class Loan {
-                                    -string id
-                                    -string userId
-                                    -string bookId
-                                    -Date loanDate
-                                    -Date dueDate
-                                    +isOverdue() boolean
-                                    +calculateFine() number
-                                }
-                                
-                                BorrowBookUseCase --> IUserRepository
-                                BorrowBookUseCase --> User
-                                BorrowBookUseCase --> Book
-                                BorrowBookUseCase --> Loan
-                                User ||--o{ Loan : "has many"
-                                Book ||--o{ Loan : "can have many"
-                                
-                                style BorrowBookUseCase fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                                style IUserRepository fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                                style User fill:#10b981,stroke:#059669,color:#fff
-                                style Book fill:#10b981,stroke:#059669,color:#fff
-                                style Loan fill:#10b981,stroke:#059669,color:#fff
-                            </div>
-                            <div class="level-description">
-                                <h4>🎯 Propósito del Nivel 4</h4>
-                                <p>Detalla la estructura de clases, interfaces y sus relaciones en el código.</p>
-                                <ul>
-                                    <li><strong>Use Cases:</strong> Orquestan múltiples entidades y repositorios</li>
-                                    <li><strong>Interfaces:</strong> Definen contratos entre capas</li>
-                                    <li><strong>Entities:</strong> Contienen lógica de negocio pura</li>
-                                    <li><strong>Relationships:</strong> Muestran dependencias y asociaciones</li>
-                                </ul>
+                        <div class="c4-diagram">
+                            <div class="diagram-title">Nivel 4: Estructura de Clases</div>
+                            <div class="code-diagram">
+                                <div class="class-diagram">
+                                    <div class="class-box">
+                                        <div class="class-header">BorrowBookUseCase</div>
+                                        <div class="class-body">
+                                            <div class="class-method">- userRepository: IUserRepository</div>
+                                            <div class="class-method">- bookRepository: IBookRepository</div>
+                                            <div class="class-method">- loanRepository: ILoanRepository</div>
+                                            <div class="class-method">+ execute(userId, bookId): Promise&lt;Loan&gt;</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="class-box">
+                                        <div class="class-header">User Entity</div>
+                                        <div class="class-body">
+                                            <div class="class-method">- id: string</div>
+                                            <div class="class-method">- email: string</div>
+                                            <div class="class-method">- role: UserRole</div>
+                                            <div class="class-method">+ isPremium(): boolean</div>
+                                            <div class="class-method">+ canBorrowBooks(): boolean</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="class-box">
+                                        <div class="class-header">Book Entity</div>
+                                        <div class="class-body">
+                                            <div class="class-method">- id: string</div>
+                                            <div class="class-method">- title: string</div>
+                                            <div class="class-method">- status: BookStatus</div>
+                                            <div class="class-method">+ isAvailable(): boolean</div>
+                                            <div class="class-method">+ requiresPremium(): boolean</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -530,33 +421,6 @@
         <!-- Funcionalidades Section -->
         <section class="section" id="funcionalidades">
             <h2 class="section-title">✅ Funcionalidades Implementadas</h2>
-            
-            <div class="diagram-container">
-                <div class="diagram-title">Flujo de Casos de Uso Principales</div>
-                <div class="mermaid">
-                flowchart LR
-                    U[👤 Usuario] --> S[🔍 Buscar Libros]
-                    U --> B[📚 Tomar Prestado]
-                    U --> R[🔖 Reservar]
-                    U --> H[📊 Ver Historial]
-                    
-                    A[👨‍💼 Admin] --> M[📋 Gestionar Inventario]
-                    A --> P[💰 Configurar Políticas]
-                    A --> Rep[📈 Generar Reportes]
-                    
-                    S --> DB[(🗄️ Base de Datos)]
-                    B --> DB
-                    R --> N[📧 Notificaciones]
-                    B --> Pay[💳 Pagos]
-                    
-                    style U fill:#3b82f6,stroke:#1d4ed8,color:#fff
-                    style A fill:#10b981,stroke:#059669,color:#fff
-                    style DB fill:#f59e0b,stroke:#d97706,color:#fff
-                    style N fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                    style Pay fill:#ef4444,stroke:#dc2626,color:#fff
-                </div>
-            </div>
-
             <div class="features-grid">
                 <div class="feature-card">
                     <h4>🔍 Búsqueda Avanzada</h4>
@@ -617,90 +481,6 @@
             </div>
         </section>
 
-        <!-- Código Section -->
-        <section class="section" id="codigo">
-            <h2 class="section-title">💻 Implementación de Código</h2>
-            
-            <div class="diagram-container">
-                <div class="diagram-title">Diagrama de Clases - Entidades de Dominio</div>
-                <div class="mermaid">
-                classDiagram
-                    class User {
-                        -string id
-                        -string email
-                        -string name
-                        -UserRole role
-                        -MembershipType membershipType
-                        +isPremium() boolean
-                        +canBorrowBooks() boolean
-                    }
-                    
-                    class Book {
-                        -string id
-                        -string title
-                        -string author
-                        -BookFormat format
-                        -BookStatus status
-                        -number availableCopies
-                        +isAvailable() boolean
-                        +requiresPremium() boolean
-                    }
-                    
-                    class Loan {
-                        -string id
-                        -string userId
-                        -string bookId
-                        -Date loanDate
-                        -Date dueDate
-                        -LoanStatus status
-                        +isOverdue() boolean
-                        +calculateFine() number
-                    }
-                    
-                    User ||--o{ Loan : "has many"
-                    Book ||--o{ Loan : "can have many"
-                    
-                    style User fill:#10b981,stroke:#059669,color:#fff
-                    style Book fill:#10b981,stroke:#059669,color:#fff
-                    style Loan fill:#10b981,stroke:#059669,color:#fff
-                </div>
-            </div>
-
-            <div class="code-container">
-                <div class="code-title">Ejemplo: Caso de Uso - Préstamo de Libro</div>
-                <pre><code><span class="keyword">export class</span> BorrowBookUseCase {
-  <span class="keyword">constructor</span>(
-    <span class="keyword">private</span> userRepository: IUserRepository,
-    <span class="keyword">private</span> bookRepository: IBookRepository,
-    <span class="keyword">private</span> loanRepository: ILoanRepository
-  ) {}
-
-  <span class="keyword">async</span> execute(userId: <span class="keyword">string</span>, bookId: <span class="keyword">string</span>): Promise&lt;Loan&gt; {
-    <span class="comment">// 1. Validar usuario</span>
-    <span class="keyword">const</span> user = <span class="keyword">await</span> <span class="keyword">this</span>.userRepository.findById(userId);
-    <span class="keyword">if</span> (!user?.canBorrowBooks()) {
-      <span class="keyword">throw new</span> Error(<span class="string">'Usuario no puede tomar prestados'</span>);
-    }
-
-    <span class="comment">// 2. Validar libro</span>
-    <span class="keyword">const</span> book = <span class="keyword">await</span> <span class="keyword">this</span>.bookRepository.findById(bookId);
-    <span class="keyword">if</span> (!book?.isAvailable()) {
-      <span class="keyword">throw new</span> Error(<span class="string">'Libro no disponible'</span>);
-    }
-
-    <span class="comment">// 3. Aplicar reglas de negocio</span>
-    <span class="keyword">if</span> (book.requiresPremium() && !user.isPremium()) {
-      <span class="keyword">throw new</span> Error(<span class="string">'Requiere membresía premium'</span>);
-    }
-
-    <span class="comment">// 4. Crear y persistir préstamo</span>
-    <span class="keyword">const</span> loan = <span class="keyword">new</span> Loan(userId, bookId, <span class="keyword">new</span> Date());
-    <span class="keyword">return await</span> <span class="keyword">this</span>.loanRepository.save(loan);
-  }
-}</code></pre>
-            </div>
-        </section>
-
         <!-- Stack Tecnológico -->
         <section class="section">
             <h2 class="section-title">🚀 Stack Tecnológico</h2>
@@ -723,11 +503,11 @@
                 </div>
                 <div class="tech-item">
                     <strong>Documentación</strong>
-                    VitePress + Mermaid
+                    VitePress + GitHub Pages
                 </div>
                 <div class="tech-item">
                     <strong>CI/CD</strong>
-                    GitHub Actions + Pages
+                    GitHub Actions + Deployment
                 </div>
             </div>
         </section>
@@ -747,34 +527,6 @@
     </div>
 
     <script>
-        // Initialize Mermaid
-        mermaid.initialize({ 
-            startOnLoad: true,
-            theme: 'default',
-            themeVariables: {
-                primaryColor: '#3b82f6',
-                primaryTextColor: '#1e293b',
-                primaryBorderColor: '#1d4ed8',
-                lineColor: '#64748b',
-                secondaryColor: '#f1f5f9',
-                tertiaryColor: '#f8fafc'
-            }
-        });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
         // Tab functionality
         function showTab(tabId) {
             // Hide all tab panels
@@ -792,36 +544,20 @@
             
             // Add active class to clicked button
             event.target.classList.add('active');
-            
-            // Re-render mermaid diagrams in the active tab
-            setTimeout(() => {
-                mermaid.init(undefined, document.querySelector(`#${tabId} .mermaid`));
-            }, 100);
         }
 
-        // Add fade-in animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             });
-        }, observerOptions);
-
-        document.querySelectorAll('.section, .arch-card, .feature-card').forEach(el => {
-            observer.observe(el);
-        });
-        
-        // Initialize first tab
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                mermaid.init();
-            }, 500);
         });
     </script>
 </body>
