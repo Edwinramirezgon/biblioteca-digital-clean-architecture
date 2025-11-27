@@ -1,0 +1,194 @@
+/* Estilos personalizados para Biblioteca Digital */
+
+:root {
+  --vp-c-brand-1: #2563eb;
+  --vp-c-brand-2: #3b82f6;
+  --vp-c-brand-3: #60a5fa;
+  --vp-c-brand-soft: rgba(37, 99, 235, 0.14);
+  
+  /* Colores para arquitectura limpia */
+  --clean-domain: #10b981;
+  --clean-application: #8b5cf6;
+  --clean-infrastructure: #f59e0b;
+  --clean-presentation: #ef4444;
+}
+
+/* Hero section personalizado */
+.VPHero .title {
+  background: linear-gradient(135deg, var(--vp-c-brand-1), var(--vp-c-brand-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Tarjetas de arquitectura */
+.architecture-card {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 16px 0;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.architecture-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  border-color: var(--vp-c-brand-2);
+}
+
+.architecture-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--vp-c-brand-1), var(--vp-c-brand-3));
+}
+
+/* Capas de Clean Architecture */
+.layer-domain {
+  border-left: 4px solid var(--clean-domain);
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+}
+
+.layer-application {
+  border-left: 4px solid var(--clean-application);
+  background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+}
+
+.layer-infrastructure {
+  border-left: 4px solid var(--clean-infrastructure);
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+}
+
+.layer-presentation {
+  border-left: 4px solid var(--clean-presentation);
+  background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+}
+
+/* Diagramas mejorados */
+.mermaid {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+/* Código con mejor estilo */
+.vp-code-group {
+  margin: 20px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Badges personalizados */
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 2px 4px;
+}
+
+.badge-domain { background: var(--clean-domain); color: white; }
+.badge-application { background: var(--clean-application); color: white; }
+.badge-infrastructure { background: var(--clean-infrastructure); color: white; }
+.badge-presentation { background: var(--clean-presentation); color: white; }
+
+/* Tablas mejoradas */
+.vp-doc table {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.vp-doc th {
+  background: linear-gradient(135deg, var(--vp-c-brand-1), var(--vp-c-brand-2));
+  color: white;
+  font-weight: 600;
+}
+
+/* Alertas personalizadas */
+.custom-block.tip {
+  border-left: 4px solid var(--clean-domain);
+}
+
+.custom-block.warning {
+  border-left: 4px solid var(--clean-infrastructure);
+}
+
+.custom-block.danger {
+  border-left: 4px solid var(--clean-presentation);
+}
+
+.custom-block.info {
+  border-left: 4px solid var(--clean-application);
+}
+
+/* Navegación mejorada */
+.VPSidebar .group .items .item .link {
+  transition: all 0.2s ease;
+}
+
+.VPSidebar .group .items .item .link:hover {
+  background: var(--vp-c-brand-soft);
+  border-radius: 6px;
+}
+
+/* Footer personalizado */
+.VPFooter {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+}
+
+/* Responsive mejoras */
+@media (max-width: 768px) {
+  .architecture-card {
+    padding: 16px;
+    margin: 12px 0;
+  }
+  
+  .mermaid {
+    padding: 12px;
+    overflow-x: auto;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Mejoras para diagramas C4 */
+.c4-diagram {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.c4-level-1 { border-left: 6px solid #3b82f6; }
+.c4-level-2 { border-left: 6px solid #10b981; }
+.c4-level-3 { border-left: 6px solid #f59e0b; }
+.c4-level-4 { border-left: 6px solid #ef4444; }
