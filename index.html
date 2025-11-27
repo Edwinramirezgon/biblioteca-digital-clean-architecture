@@ -60,12 +60,19 @@
         .diagram-title { font-size: 1.5em; color: #1e293b; margin-bottom: 20px; text-align: center; }
         .mermaid { background: #fafafa; border-radius: 10px; padding: 20px; }
         
-        /* C4 Model Grid */
-        .c4-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .c4-card { background: white; border-radius: 15px; padding: 30px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: all 0.3s; }
-        .c4-card:hover { transform: translateY(-5px); }
-        .c4-card .level-icon { font-size: 4em; margin-bottom: 20px; }
-        .c4-card h4 { font-size: 1.4em; color: #1e293b; margin-bottom: 15px; }
+        /* C4 Tabs */
+        .c4-tabs { margin: 40px 0; }
+        .tab-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; justify-content: center; }
+        .tab-btn { background: #f1f5f9; border: 2px solid #e2e8f0; padding: 12px 20px; border-radius: 10px; cursor: pointer; transition: all 0.3s; font-weight: 600; }
+        .tab-btn:hover { background: #e2e8f0; }
+        .tab-btn.active { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border-color: #1d4ed8; }
+        .tab-content { margin-top: 30px; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        .level-description { background: #f8fafc; padding: 25px; border-radius: 12px; margin-top: 20px; }
+        .level-description h4 { color: #1e293b; margin-bottom: 15px; }
+        .level-description ul { margin-top: 15px; }
+        .level-description li { margin: 8px 0; }
         
         /* Features Grid */
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
@@ -252,80 +259,270 @@
         <section class="section" id="c4-model">
             <h2 class="section-title">📊 Modelo C4 - Documentación en 4 Niveles</h2>
             
-            <div class="diagram-container">
-                <div class="diagram-title">Nivel 1: Diagrama de Contexto del Sistema</div>
-                <div class="mermaid">
-                C4Context
-                    title Sistema de Biblioteca Digital - Contexto
-
-                    Person(reader, "Lector", "Usuario que busca y lee libros")
-                    Person(admin, "Administrador", "Gestiona inventario y políticas")
-                    
-                    System(biblioteca, "Sistema de Biblioteca Digital", "Permite gestionar préstamos, reservas y lectura de libros")
-                    
-                    System_Ext(contentProvider, "Proveedor de Contenido", "Suministra libros digitales")
-                    System_Ext(paymentGateway, "Pasarela de Pago", "Procesa pagos de membresías")
-                    System_Ext(emailService, "Servicio de Email", "Envía notificaciones")
-                    
-                    Rel(reader, biblioteca, "Busca libros, hace préstamos y reservas")
-                    Rel(admin, biblioteca, "Gestiona inventario y usuarios")
-                    Rel(biblioteca, contentProvider, "Obtiene contenido digital")
-                    Rel(biblioteca, paymentGateway, "Procesa pagos")
-                    Rel(biblioteca, emailService, "Envía notificaciones")
+            <!-- C4 Tabs -->
+            <div class="c4-tabs">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="showTab('nivel1')">🌍 Nivel 1: Contexto</button>
+                    <button class="tab-btn" onclick="showTab('nivel2')">📦 Nivel 2: Contenedores</button>
+                    <button class="tab-btn" onclick="showTab('nivel3')">🔧 Nivel 3: Componentes</button>
+                    <button class="tab-btn" onclick="showTab('nivel4')">💻 Nivel 4: Código</button>
                 </div>
-            </div>
-
-            <div class="diagram-container">
-                <div class="diagram-title">Nivel 2: Diagrama de Contenedores</div>
-                <div class="mermaid">
-                C4Container
-                    title Sistema de Biblioteca Digital - Contenedores
-
-                    Person(reader, "Lector")
-                    Person(admin, "Administrador")
+                
+                <div class="tab-content">
+                    <!-- Nivel 1: Contexto -->
+                    <div id="nivel1" class="tab-panel active">
+                        <div class="diagram-container">
+                            <div class="diagram-title">Nivel 1: Diagrama de Contexto del Sistema</div>
+                            <div class="mermaid">
+                            flowchart TB
+                                subgraph "Actores Externos"
+                                    R[👤 Lectores<br/>Buscan y leen libros]
+                                    A[👨💼 Administradores<br/>Gestionan sistema]
+                                end
+                                
+                                subgraph "Sistema Principal"
+                                    S[📚 Sistema de Biblioteca Digital<br/>Gestiona préstamos, reservas y lectura]
+                                end
+                                
+                                subgraph "Sistemas Externos"
+                                    CP[📖 Proveedor de Contenido<br/>Libros digitales]
+                                    PG[💳 Pasarela de Pago<br/>Stripe]
+                                    ES[📧 Servicio de Email<br/>SendGrid]
+                                end
+                                
+                                R -.-> S
+                                A -.-> S
+                                S -.-> CP
+                                S -.-> PG
+                                S -.-> ES
+                                
+                                style R fill:#3b82f6,stroke:#1d4ed8,color:#fff
+                                style A fill:#10b981,stroke:#059669,color:#fff
+                                style S fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                                style CP fill:#f59e0b,stroke:#d97706,color:#fff
+                                style PG fill:#ef4444,stroke:#dc2626,color:#fff
+                                style ES fill:#06b6d4,stroke:#0891b2,color:#fff
+                            </div>
+                            <div class="level-description">
+                                <h4>🎯 Propósito del Nivel 1</h4>
+                                <p>Muestra el sistema como una caja negra y cómo interactúa con usuarios y sistemas externos.</p>
+                                <ul>
+                                    <li><strong>Lectores:</strong> Usuarios finales que buscan, reservan y leen libros</li>
+                                    <li><strong>Administradores:</strong> Personal que gestiona inventario y políticas</li>
+                                    <li><strong>Sistemas Externos:</strong> Proveedores de contenido, pagos y notificaciones</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                     
-                    Container_Boundary(c1, "Sistema de Biblioteca Digital") {
-                        Container(webapp, "Aplicación Web", "React + TypeScript", "Interfaz de usuario")
-                        Container(api, "API REST", "Node.js + Express", "Lógica de negocio")
-                        Container(database, "Base de Datos", "PostgreSQL", "Almacena datos")
-                        Container(cache, "Cache", "Redis", "Cache de sesiones")
-                    }
+                    <!-- Nivel 2: Contenedores -->
+                    <div id="nivel2" class="tab-panel">
+                        <div class="diagram-container">
+                            <div class="diagram-title">Nivel 2: Diagrama de Contenedores</div>
+                            <div class="mermaid">
+                            flowchart TB
+                                subgraph "Usuarios"
+                                    U1[👤 Lectores]
+                                    U2[👨💼 Administradores]
+                                end
+                                
+                                subgraph "Sistema de Biblioteca Digital"
+                                    WA[🌐 Aplicación Web<br/>React + TypeScript<br/>SPA Responsive]
+                                    API[⚡ API REST<br/>Node.js + Express<br/>Clean Architecture]
+                                    DB[(🗄️ Base de Datos<br/>PostgreSQL<br/>Datos principales)]
+                                    CACHE[(⚡ Cache<br/>Redis<br/>Sesiones y búsquedas)]
+                                end
+                                
+                                subgraph "Servicios Externos"
+                                    CP[📖 Proveedor Contenido]
+                                    PG[💳 Stripe]
+                                    ES[📧 SendGrid]
+                                end
+                                
+                                U1 --> WA
+                                U2 --> WA
+                                WA --> API
+                                API --> DB
+                                API --> CACHE
+                                API --> CP
+                                API --> PG
+                                API --> ES
+                                
+                                style WA fill:#3b82f6,stroke:#1d4ed8,color:#fff
+                                style API fill:#10b981,stroke:#059669,color:#fff
+                                style DB fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                                style CACHE fill:#f59e0b,stroke:#d97706,color:#fff
+                            </div>
+                            <div class="level-description">
+                                <h4>🎯 Propósito del Nivel 2</h4>
+                                <p>Descompone el sistema en contenedores principales y muestra la arquitectura de alto nivel.</p>
+                                <ul>
+                                    <li><strong>Web App:</strong> Interfaz de usuario React con TypeScript</li>
+                                    <li><strong>API REST:</strong> Backend con Node.js implementando Clean Architecture</li>
+                                    <li><strong>PostgreSQL:</strong> Base de datos principal para persistencia</li>
+                                    <li><strong>Redis:</strong> Cache para sesiones y optimización de búsquedas</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                     
-                    System_Ext(contentProvider, "Proveedor de Contenido")
-                    System_Ext(paymentGateway, "Pasarela de Pago")
-                    System_Ext(emailService, "Servicio de Email")
+                    <!-- Nivel 3: Componentes -->
+                    <div id="nivel3" class="tab-panel">
+                        <div class="diagram-container">
+                            <div class="diagram-title">Nivel 3: Componentes de la API REST</div>
+                            <div class="mermaid">
+                            flowchart TB
+                                subgraph "🖥️ Capa de Presentación"
+                                    BC[📚 BookController]
+                                    UC[👤 UserController]
+                                    AC[🔐 AuthController]
+                                    MW[🛡️ Middleware]
+                                end
+                                
+                                subgraph "📋 Capa de Aplicación"
+                                    BUC[📖 BorrowBookUseCase]
+                                    SUC[🔍 SearchBooksUseCase]
+                                    RUC[🔖 ReserveBookUseCase]
+                                    SI[🔌 Service Interfaces]
+                                end
+                                
+                                subgraph "🎯 Capa de Dominio"
+                                    UE[👤 User Entity]
+                                    BE[📚 Book Entity]
+                                    LE[📋 Loan Entity]
+                                    RI[🔌 Repository Interfaces]
+                                end
+                                
+                                subgraph "🔧 Capa de Infraestructura"
+                                    UR[👤 UserRepository]
+                                    BR[📚 BookRepository]
+                                    LR[📋 LoanRepository]
+                                    ES[📧 EmailService]
+                                    PS[💳 PaymentService]
+                                end
+                                
+                                BC --> BUC
+                                BC --> SUC
+                                BC --> RUC
+                                UC --> BUC
+                                
+                                BUC --> UE
+                                BUC --> BE
+                                BUC --> LE
+                                SUC --> BE
+                                RUC --> UE
+                                
+                                BUC --> RI
+                                SUC --> RI
+                                RUC --> SI
+                                
+                                UR -.-> RI
+                                BR -.-> RI
+                                LR -.-> RI
+                                ES -.-> SI
+                                PS -.-> SI
+                                
+                                style BC fill:#ef4444,stroke:#dc2626,color:#fff
+                                style UC fill:#ef4444,stroke:#dc2626,color:#fff
+                                style AC fill:#ef4444,stroke:#dc2626,color:#fff
+                                style BUC fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                                style SUC fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                                style RUC fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                                style UE fill:#10b981,stroke:#059669,color:#fff
+                                style BE fill:#10b981,stroke:#059669,color:#fff
+                                style LE fill:#10b981,stroke:#059669,color:#fff
+                                style UR fill:#f59e0b,stroke:#d97706,color:#fff
+                                style BR fill:#f59e0b,stroke:#d97706,color:#fff
+                                style LR fill:#f59e0b,stroke:#d97706,color:#fff
+                            </div>
+                            <div class="level-description">
+                                <h4>🎯 Propósito del Nivel 3</h4>
+                                <p>Muestra los componentes dentro de la API REST organizados por capas de Clean Architecture.</p>
+                                <ul>
+                                    <li><strong>Controllers:</strong> Manejan requests HTTP y coordinan respuestas</li>
+                                    <li><strong>Use Cases:</strong> Implementan lógica de aplicación específica</li>
+                                    <li><strong>Entities:</strong> Encapsulan reglas de negocio del dominio</li>
+                                    <li><strong>Repositories:</strong> Abstraen el acceso a datos</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                     
-                    Rel(reader, webapp, "Usa", "HTTPS")
-                    Rel(admin, webapp, "Usa", "HTTPS")
-                    Rel(webapp, api, "Hace llamadas API", "JSON/HTTPS")
-                    Rel(api, database, "Lee y escribe", "SQL/TCP")
-                    Rel(api, cache, "Cache", "Redis Protocol")
-                    Rel(api, contentProvider, "Obtiene libros", "HTTPS")
-                    Rel(api, paymentGateway, "Procesa pagos", "HTTPS")
-                    Rel(api, emailService, "Envía emails", "HTTPS")
-                </div>
-            </div>
-
-            <div class="c4-grid">
-                <div class="c4-card">
-                    <div class="level-icon">🌍</div>
-                    <h4>Nivel 1: Contexto</h4>
-                    <p>Sistema en su entorno con actores (Lectores, Admins) y sistemas externos</p>
-                </div>
-                <div class="c4-card">
-                    <div class="level-icon">📦</div>
-                    <h4>Nivel 2: Contenedores</h4>
-                    <p>Arquitectura de alto nivel: Web App, API REST, Database, Cache</p>
-                </div>
-                <div class="c4-card">
-                    <div class="level-icon">🔧</div>
-                    <h4>Nivel 3: Componentes</h4>
-                    <p>Componentes detallados por cada capa de Clean Architecture</p>
-                </div>
-                <div class="c4-card">
-                    <div class="level-icon">💻</div>
-                    <h4>Nivel 4: Código</h4>
-                    <p>Diagramas de clases, interfaces y patrones implementados</p>
+                    <!-- Nivel 4: Código -->
+                    <div id="nivel4" class="tab-panel">
+                        <div class="diagram-container">
+                            <div class="diagram-title">Nivel 4: Diagrama de Clases Detallado</div>
+                            <div class="mermaid">
+                            classDiagram
+                                class BorrowBookUseCase {
+                                    -IUserRepository userRepository
+                                    -IBookRepository bookRepository
+                                    -ILoanRepository loanRepository
+                                    +execute(userId: string, bookId: string) Promise~Loan~
+                                    -validateUser(user: User) void
+                                    -validateBook(book: Book) void
+                                }
+                                
+                                class IUserRepository {
+                                    <<interface>>
+                                    +findById(id: string) Promise~User~
+                                    +save(user: User) Promise~User~
+                                }
+                                
+                                class User {
+                                    -string id
+                                    -string email
+                                    -UserRole role
+                                    -MembershipType membershipType
+                                    +isPremium() boolean
+                                    +canBorrowBooks() boolean
+                                }
+                                
+                                class Book {
+                                    -string id
+                                    -string title
+                                    -BookFormat format
+                                    -BookStatus status
+                                    -number availableCopies
+                                    +isAvailable() boolean
+                                    +requiresPremium() boolean
+                                }
+                                
+                                class Loan {
+                                    -string id
+                                    -string userId
+                                    -string bookId
+                                    -Date loanDate
+                                    -Date dueDate
+                                    +isOverdue() boolean
+                                    +calculateFine() number
+                                }
+                                
+                                BorrowBookUseCase --> IUserRepository
+                                BorrowBookUseCase --> User
+                                BorrowBookUseCase --> Book
+                                BorrowBookUseCase --> Loan
+                                User ||--o{ Loan : "has many"
+                                Book ||--o{ Loan : "can have many"
+                                
+                                style BorrowBookUseCase fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                                style IUserRepository fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                                style User fill:#10b981,stroke:#059669,color:#fff
+                                style Book fill:#10b981,stroke:#059669,color:#fff
+                                style Loan fill:#10b981,stroke:#059669,color:#fff
+                            </div>
+                            <div class="level-description">
+                                <h4>🎯 Propósito del Nivel 4</h4>
+                                <p>Detalla la estructura de clases, interfaces y sus relaciones en el código.</p>
+                                <ul>
+                                    <li><strong>Use Cases:</strong> Orquestan múltiples entidades y repositorios</li>
+                                    <li><strong>Interfaces:</strong> Definen contratos entre capas</li>
+                                    <li><strong>Entities:</strong> Contienen lógica de negocio pura</li>
+                                    <li><strong>Relationships:</strong> Muestran dependencias y asociaciones</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -578,6 +775,30 @@
             });
         });
 
+        // Tab functionality
+        function showTab(tabId) {
+            // Hide all tab panels
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab panel
+            document.getElementById(tabId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Re-render mermaid diagrams in the active tab
+            setTimeout(() => {
+                mermaid.init(undefined, document.querySelector(`#${tabId} .mermaid`));
+            }, 100);
+        }
+
         // Add fade-in animation on scroll
         const observerOptions = {
             threshold: 0.1,
@@ -592,8 +813,15 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.section, .arch-card, .c4-card, .feature-card').forEach(el => {
+        document.querySelectorAll('.section, .arch-card, .feature-card').forEach(el => {
             observer.observe(el);
+        });
+        
+        // Initialize first tab
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                mermaid.init();
+            }, 500);
         });
     </script>
 </body>
