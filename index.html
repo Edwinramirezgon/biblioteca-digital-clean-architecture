@@ -155,25 +155,40 @@
             <h2 class="section-title">🏗️ Arquitectura Limpia - Capas Concéntricas</h2>
             
             <div class="clean-arch-diagram">
-                <div class="arch-circles">
-                    <div class="arch-circle presentation-circle">
-                        <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%);">
-                            🖥️<br>PRESENTACIÓN
-                        </div>
-                    </div>
-                    <div class="arch-circle infrastructure-circle">
-                        <div style="position: absolute; top: 40px; left: 50%; transform: translateX(-50%);">
-                            🔧<br>INFRAESTRUCTURA
-                        </div>
-                    </div>
-                    <div class="arch-circle application-circle">
-                        <div style="position: absolute; top: 60px; left: 50%; transform: translateX(-50%);">
-                            📋<br>APLICACIÓN
-                        </div>
-                    </div>
-                    <div class="arch-circle domain-circle">
-                        🎯<br>DOMINIO
-                    </div>
+                <div class="mermaid">
+                flowchart TD
+                    subgraph P ["🖥️ PRESENTACIÓN"]
+                        PC[Controllers]
+                        PR[Routes]
+                        PM[Middleware]
+                    end
+                    
+                    subgraph I ["🔧 INFRAESTRUCTURA"]
+                        IR[Repositories]
+                        IS[External Services]
+                        ID[Database]
+                    end
+                    
+                    subgraph A ["📋 APLICACIÓN"]
+                        AU[Use Cases]
+                        AI[Interfaces]
+                        AS[Services]
+                    end
+                    
+                    subgraph D ["🎯 DOMINIO"]
+                        DE[Entities]
+                        DR[Rules]
+                        DV[Value Objects]
+                    end
+                    
+                    P --> A
+                    A --> D
+                    I --> A
+                    
+                    style P fill:#ef4444,stroke:#dc2626,color:#fff
+                    style I fill:#f59e0b,stroke:#d97706,color:#fff
+                    style A fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                    style D fill:#10b981,stroke:#059669,color:#fff
                 </div>
             </div>
 
@@ -308,36 +323,36 @@
                     <div id="nivel2" class="tab-panel">
                         <div class="c4-diagram">
                             <div class="diagram-title">Nivel 2: Diagrama de Contenedores</div>
-                            <div class="container-diagram">
-                                <div class="container-item webapp">
-                                    <h4>🌐 Aplicación Web</h4>
-                                    <p><strong>Tecnología:</strong> React + TypeScript</p>
-                                    <p><strong>Función:</strong> Interfaz de usuario responsive para lectores y administradores</p>
-                                </div>
+                            <div class="mermaid">
+                            flowchart TB
+                                U[👤 Usuarios]
                                 
-                                <div class="container-item api">
-                                    <h4>⚡ API REST</h4>
-                                    <p><strong>Tecnología:</strong> Node.js + Express</p>
-                                    <p><strong>Función:</strong> Lógica de negocio con Clean Architecture</p>
-                                </div>
+                                subgraph "Sistema de Biblioteca Digital"
+                                    W[🌐 Aplicación Web<br/>React + TypeScript<br/>Interfaz responsive]
+                                    A[⚡ API REST<br/>Node.js + Express<br/>Clean Architecture]
+                                    D[🗄️ Base de Datos<br/>PostgreSQL<br/>Usuarios, libros, préstamos]
+                                    C[⚡ Cache<br/>Redis<br/>Sesiones y búsquedas]
+                                end
                                 
-                                <div class="container-item database">
-                                    <h4>🗄️ Base de Datos</h4>
-                                    <p><strong>Tecnología:</strong> PostgreSQL</p>
-                                    <p><strong>Función:</strong> Almacena usuarios, libros, préstamos y reservas</p>
-                                </div>
+                                E1[📚 Proveedor Contenido]
+                                E2[💳 Stripe]
+                                E3[📧 SendGrid]
                                 
-                                <div class="container-item cache">
-                                    <h4>⚡ Cache</h4>
-                                    <p><strong>Tecnología:</strong> Redis</p>
-                                    <p><strong>Función:</strong> Cache de sesiones y búsquedas frecuentes</p>
-                                </div>
+                                U --> W
+                                W --> A
+                                A --> D
+                                A --> C
+                                A --> E1
+                                A --> E2
+                                A --> E3
                                 
-                                <!-- Multiple connection arrows -->
-                                <div style="position: absolute; top: 25%; left: 50%; transform: translateX(-50%); font-size: 1.8em; color: #10b981;">↓</div>
-                                <div style="position: absolute; top: 50%; left: 25%; transform: translateY(-50%); font-size: 1.8em; color: #8b5cf6;">↓</div>
-                                <div style="position: absolute; top: 50%; right: 25%; transform: translateY(-50%); font-size: 1.8em; color: #f59e0b;">↓</div>
-                                <div style="position: absolute; bottom: 25%; left: 50%; transform: translateX(-50%); font-size: 1.8em; color: #64748b;">↔</div>
+                                style W fill:#3b82f6,stroke:#1d4ed8,color:#fff
+                                style A fill:#10b981,stroke:#059669,color:#fff
+                                style D fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                                style C fill:#f59e0b,stroke:#d97706,color:#fff
+                                style E1 fill:#64748b,stroke:#475569,color:#fff
+                                style E2 fill:#64748b,stroke:#475569,color:#fff
+                                style E3 fill:#64748b,stroke:#475569,color:#fff
                             </div>
                         </div>
                     </div>
@@ -346,47 +361,51 @@
                     <div id="nivel3" class="tab-panel">
                         <div class="c4-diagram">
                             <div class="diagram-title">Nivel 3: Componentes de la API REST</div>
-                            <div class="component-diagram">
-                                <div class="component-layer layer-presentation">
-                                    <h4>🖥️ Presentación</h4>
-                                    <div class="component-item">BookController</div>
-                                    <div class="component-item">UserController</div>
-                                    <div class="component-item">AuthController</div>
-                                    <div class="component-item">Middleware</div>
-                                </div>
+                            <div class="mermaid">
+                            flowchart TD
+                                subgraph P ["🖥️ PRESENTACIÓN"]
+                                    BC[BookController]
+                                    UC[UserController]
+                                    AC[AuthController]
+                                    MW[Middleware]
+                                end
                                 
-                                <div class="component-layer layer-application">
-                                    <h4>📋 Aplicación</h4>
-                                    <div class="component-item">BorrowBookUseCase</div>
-                                    <div class="component-item">SearchBooksUseCase</div>
-                                    <div class="component-item">ReserveBookUseCase</div>
-                                    <div class="component-item">Service Interfaces</div>
-                                </div>
+                                subgraph A ["📋 APLICACIÓN"]
+                                    BBU[BorrowBookUseCase]
+                                    SBU[SearchBooksUseCase]
+                                    RBU[ReserveBookUseCase]
+                                    SI[Service Interfaces]
+                                end
                                 
-                                <div class="component-layer layer-domain">
-                                    <h4>🎯 Dominio</h4>
-                                    <div class="component-item">User Entity</div>
-                                    <div class="component-item">Book Entity</div>
-                                    <div class="component-item">Loan Entity</div>
-                                    <div class="component-item">Repository Interfaces</div>
-                                </div>
+                                subgraph D ["🎯 DOMINIO"]
+                                    UE[User Entity]
+                                    BE[Book Entity]
+                                    LE[Loan Entity]
+                                    RI[Repository Interfaces]
+                                end
                                 
-                                <div class="component-layer layer-infrastructure">
-                                    <h4>🔧 Infraestructura</h4>
-                                    <div class="component-item">PostgreSQL Repos</div>
-                                    <div class="component-item">Email Service</div>
-                                    <div class="component-item">Payment Service</div>
-                                    <div class="component-item">External APIs</div>
-                                </div>
+                                subgraph I ["🔧 INFRAESTRUCTURA"]
+                                    PR[PostgreSQL Repos]
+                                    ES[Email Service]
+                                    PS[Payment Service]
+                                    EA[External APIs]
+                                end
                                 
-                                <!-- Dependency Arrows -->
-                                <div style="position: absolute; top: 50%; left: 12.5%; transform: translateY(-50%); font-size: 1.5em; color: #ef4444;">→</div>
-                                <div style="position: absolute; top: 50%; left: 37.5%; transform: translateY(-50%); font-size: 1.5em; color: #8b5cf6;">→</div>
-                                <div style="position: absolute; top: 50%; left: 62.5%; transform: translateY(-50%); font-size: 1.5em; color: #10b981;">→</div>
-                                <!-- Additional arrows -->
-                                <div style="position: absolute; top: 30%; left: 28%; font-size: 1.2em; color: #ef4444;">↓</div>
-                                <div style="position: absolute; top: 30%; left: 53%; font-size: 1.2em; color: #8b5cf6;">↓</div>
-                                <div style="position: absolute; top: 30%; left: 78%; font-size: 1.2em; color: #f59e0b;">↑</div>
+                                BC --> BBU
+                                UC --> SBU
+                                AC --> RBU
+                                BBU --> UE
+                                SBU --> BE
+                                RBU --> LE
+                                SI --> RI
+                                PR --> RI
+                                ES --> SI
+                                PS --> SI
+                                
+                                style P fill:#ef4444,stroke:#dc2626,color:#fff
+                                style A fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                                style D fill:#10b981,stroke:#059669,color:#fff
+                                style I fill:#f59e0b,stroke:#d97706,color:#fff
                             </div>
                         </div>
                     </div>
@@ -395,46 +414,46 @@
                     <div id="nivel4" class="tab-panel">
                         <div class="c4-diagram">
                             <div class="diagram-title">Nivel 4: Estructura de Clases</div>
-                            <div class="code-diagram">
-                                <div class="class-diagram">
-                                    <div class="class-box">
-                                        <div class="class-header">BorrowBookUseCase</div>
-                                        <div class="class-body">
-                                            <div class="class-method">- userRepository: IUserRepository</div>
-                                            <div class="class-method">- bookRepository: IBookRepository</div>
-                                            <div class="class-method">- loanRepository: ILoanRepository</div>
-                                            <div class="class-method">+ execute(userId, bookId): Promise&lt;Loan&gt;</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="class-box">
-                                        <div class="class-header">User Entity</div>
-                                        <div class="class-body">
-                                            <div class="class-method">- id: string</div>
-                                            <div class="class-method">- email: string</div>
-                                            <div class="class-method">- role: UserRole</div>
-                                            <div class="class-method">+ isPremium(): boolean</div>
-                                            <div class="class-method">+ canBorrowBooks(): boolean</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="class-box">
-                                        <div class="class-header">Book Entity</div>
-                                        <div class="class-body">
-                                            <div class="class-method">- id: string</div>
-                                            <div class="class-method">- title: string</div>
-                                            <div class="class-method">- status: BookStatus</div>
-                                            <div class="class-method">+ isAvailable(): boolean</div>
-                                            <div class="class-method">+ requiresPremium(): boolean</div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="mermaid">
+                            classDiagram
+                                class BorrowBookUseCase {
+                                    -userRepository: IUserRepository
+                                    -bookRepository: IBookRepository
+                                    -loanRepository: ILoanRepository
+                                    +execute(userId, bookId) Promise~Loan~
+                                }
                                 
-                                <!-- Enhanced class relationships -->
-                                <div style="position: absolute; top: 25%; left: 18%; font-size: 1.1em; color: #8b5cf6;">uses →</div>
-                                <div style="position: absolute; top: 25%; right: 18%; font-size: 1.1em; color: #8b5cf6;">← uses</div>
-                                <div style="position: absolute; bottom: 25%; left: 35%; font-size: 1.1em; color: #10b981;">creates ↑</div>
-                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.1em; color: #f59e0b;">depends ↕</div>
+                                class User {
+                                    -id: string
+                                    -email: string
+                                    -role: UserRole
+                                    +isPremium() boolean
+                                    +canBorrowBooks() boolean
+                                }
+                                
+                                class Book {
+                                    -id: string
+                                    -title: string
+                                    -status: BookStatus
+                                    +isAvailable() boolean
+                                    +requiresPremium() boolean
+                                }
+                                
+                                class Loan {
+                                    -id: string
+                                    -userId: string
+                                    -bookId: string
+                                    -borrowDate: Date
+                                    -dueDate: Date
+                                    +calculateFine() number
+                                    +isOverdue() boolean
+                                }
+                                
+                                BorrowBookUseCase --> User : uses
+                                BorrowBookUseCase --> Book : uses
+                                BorrowBookUseCase --> Loan : creates
+                                User --> Loan : has many
+                                Book --> Loan : has many
                             </div>
                         </div>
                     </div>
@@ -551,6 +570,18 @@
     </div>
 
     <script>
+        // Initialize Mermaid
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#3b82f6',
+                primaryTextColor: '#ffffff',
+                primaryBorderColor: '#1d4ed8',
+                lineColor: '#64748b'
+            }
+        });
+
         // Tab functionality
         function showTab(tabId) {
             // Hide all tab panels
@@ -568,6 +599,11 @@
             
             // Add active class to clicked button
             event.target.classList.add('active');
+            
+            // Re-render Mermaid diagrams in the active tab
+            setTimeout(() => {
+                mermaid.init(undefined, document.querySelectorAll('#' + tabId + ' .mermaid'));
+            }, 100);
         }
 
         // Smooth scrolling for navigation links
