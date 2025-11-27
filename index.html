@@ -35,16 +35,6 @@
         .section-title { font-size: 3em; text-align: center; margin-bottom: 50px; color: #1e293b; position: relative; }
         .section-title::after { content: ''; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 100px; height: 4px; background: linear-gradient(90deg, #3b82f6, #8b5cf6); border-radius: 2px; }
         
-        /* Clean Architecture Diagram */
-        .clean-arch-diagram { display: flex; justify-content: center; align-items: center; margin: 50px 0; min-height: 500px; }
-        .arch-circles { position: relative; width: 500px; height: 500px; }
-        .arch-circle { position: absolute; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-align: center; font-weight: bold; color: white; transition: opacity 0.2s ease; }
-        .arch-circle:hover { opacity: 1 !important; }
-        .domain-circle { width: 150px; height: 150px; background: linear-gradient(135deg, #10b981, #059669); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 4; }
-        .application-circle { width: 250px; height: 250px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3; opacity: 0.9; }
-        .infrastructure-circle { width: 350px; height: 350px; background: linear-gradient(135deg, #f59e0b, #d97706); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; opacity: 0.8; }
-        .presentation-circle { width: 450px; height: 450px; background: linear-gradient(135deg, #ef4444, #dc2626); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; opacity: 0.7; }
-        
         /* C4 Tabs */
         .c4-tabs { margin: 40px 0; }
         .tab-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; justify-content: center; }
@@ -110,15 +100,6 @@
             .nav-links { display: none; }
             .arch-grid { grid-template-columns: 1fr; }
             .section-title { font-size: 2.2em; }
-            .context-diagram { grid-template-columns: 1fr; }
-            .container-diagram { grid-template-columns: 1fr; }
-            .component-diagram { grid-template-columns: repeat(2, 1fr); }
-            .class-diagram { grid-template-columns: 1fr; }
-            .arch-circles { width: 300px; height: 300px; }
-            .domain-circle { width: 100px; height: 100px; font-size: 0.8em; }
-            .application-circle { width: 150px; height: 150px; }
-            .infrastructure-circle { width: 200px; height: 200px; }
-            .presentation-circle { width: 250px; height: 250px; }
             .mermaid { padding: 10px; overflow-x: auto; }
         }
     </style>
@@ -154,42 +135,40 @@
         <section class="section" id="arquitectura">
             <h2 class="section-title">🏗️ Arquitectura Limpia - Capas Concéntricas</h2>
             
-            <div class="clean-arch-diagram">
-                <div class="mermaid">
-                flowchart TD
-                    subgraph P ["🖥️ PRESENTACIÓN"]
-                        PC[Controllers]
-                        PR[Routes]
-                        PM[Middleware]
-                    end
-                    
-                    subgraph I ["🔧 INFRAESTRUCTURA"]
-                        IR[Repositories]
-                        IS[External Services]
-                        ID[Database]
-                    end
-                    
-                    subgraph A ["📋 APLICACIÓN"]
-                        AU[Use Cases]
-                        AI[Interfaces]
-                        AS[Services]
-                    end
-                    
-                    subgraph D ["🎯 DOMINIO"]
-                        DE[Entities]
-                        DR[Rules]
-                        DV[Value Objects]
-                    end
-                    
-                    P --> A
-                    A --> D
-                    I --> A
-                    
-                    style P fill:#ef4444,stroke:#dc2626,color:#fff
-                    style I fill:#f59e0b,stroke:#d97706,color:#fff
-                    style A fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                    style D fill:#10b981,stroke:#059669,color:#fff
-                </div>
+            <div class="mermaid">
+flowchart TD
+    subgraph P ["🖥️ PRESENTACIÓN"]
+        PC[Controllers]
+        PR[Routes]
+        PM[Middleware]
+    end
+    
+    subgraph I ["🔧 INFRAESTRUCTURA"]
+        IR[Repositories]
+        IS[External Services]
+        ID[Database]
+    end
+    
+    subgraph A ["📋 APLICACIÓN"]
+        AU[Use Cases]
+        AI[Interfaces]
+        AS[Services]
+    end
+    
+    subgraph D ["🎯 DOMINIO"]
+        DE[Entities]
+        DR[Rules]
+        DV[Value Objects]
+    end
+    
+    P --> A
+    A --> D
+    I --> A
+    
+    style P fill:#ef4444,stroke:#dc2626,color:#fff
+    style I fill:#f59e0b,stroke:#d97706,color:#fff
+    style A fill:#8b5cf6,stroke:#7c3aed,color:#fff
+    style D fill:#10b981,stroke:#059669,color:#fff
             </div>
 
             <div class="arch-grid">
@@ -249,72 +228,32 @@
                         <div class="c4-diagram">
                             <div class="diagram-title">Nivel 1: Diagrama de Contexto del Sistema</div>
                             <div class="mermaid">
-                            flowchart TB
-                                subgraph "Usuarios"
-                                    U1[👤 Lectores<br/>Buscan y leen libros]
-                                    U2[👨💼 Administradores<br/>Gestionan sistema]
-                                end
-                                
-                                S[📚 Sistema de Biblioteca Digital<br/>Gestiona préstamos, reservas y lectura]
-                                
-                                subgraph "Sistemas Externos"
-                                    E1[📖 Proveedor de Contenido<br/>Libros digitales]
-                                    E2[💳 Pasarela de Pago<br/>Stripe]
-                                    E3[📧 Servicio de Email<br/>SendGrid]
-                                end
-                                
-                                U1 --> S
-                                U2 --> S
-                                S --> E1
-                                S --> E2
-                                S --> E3
-                                
-                                style U1 fill:#3b82f6,stroke:#1d4ed8,color:#fff
-                                style U2 fill:#10b981,stroke:#059669,color:#fff
-                                style S fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                                style E1 fill:#64748b,stroke:#475569,color:#fff
-                                style E2 fill:#64748b,stroke:#475569,color:#fff
-                                style E3 fill:#64748b,stroke:#475569,color:#fff
-                            </div>
-                                <div class="actors">
-                                    <div class="actor">
-                                        <h4>👤 Lectores</h4>
-                                        <p>Usuarios que buscan, reservan y leen libros</p>
-                                    </div>
-                                    <div class="actor">
-                                        <h4>👨‍💼 Administradores</h4>
-                                        <p>Personal que gestiona inventario y políticas</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="system-center">
-                                    <div class="main-system">
-                                        <h3>📚 Sistema de Biblioteca Digital</h3>
-                                        <p>Gestiona préstamos, reservas, búsquedas y lectura de libros físicos y digitales</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="external-systems">
-                                    <div class="external-system">
-                                        <h4>📖 Proveedor de Contenido</h4>
-                                        <p>Suministra libros digitales</p>
-                                    </div>
-                                    <div class="external-system">
-                                        <h4>💳 Pasarela de Pago</h4>
-                                        <p>Procesa pagos (Stripe)</p>
-                                    </div>
-                                    <div class="external-system">
-                                        <h4>📧 Servicio de Email</h4>
-                                        <p>Envía notificaciones</p>
-                                    </div>
-                                </div>
-                                
-                                <!-- Multiple arrows -->
-                                <div style="position: absolute; top: 30%; left: 28%; font-size: 1.8em; color: #3b82f6;">→</div>
-                                <div style="position: absolute; top: 70%; left: 28%; font-size: 1.8em; color: #3b82f6;">→</div>
-                                <div style="position: absolute; top: 25%; right: 28%; font-size: 1.8em; color: #64748b;">←</div>
-                                <div style="position: absolute; top: 50%; right: 28%; font-size: 1.8em; color: #64748b;">←</div>
-                                <div style="position: absolute; top: 75%; right: 28%; font-size: 1.8em; color: #64748b;">←</div>
+flowchart TB
+    subgraph "Usuarios"
+        U1[👤 Lectores<br/>Buscan y leen libros]
+        U2[👨💼 Administradores<br/>Gestionan sistema]
+    end
+    
+    S[📚 Sistema de Biblioteca Digital<br/>Gestiona préstamos, reservas y lectura]
+    
+    subgraph "Sistemas Externos"
+        E1[📖 Proveedor de Contenido<br/>Libros digitales]
+        E2[💳 Pasarela de Pago<br/>Stripe]
+        E3[📧 Servicio de Email<br/>SendGrid]
+    end
+    
+    U1 --> S
+    U2 --> S
+    S --> E1
+    S --> E2
+    S --> E3
+    
+    style U1 fill:#3b82f6,stroke:#1d4ed8,color:#fff
+    style U2 fill:#10b981,stroke:#059669,color:#fff
+    style S fill:#8b5cf6,stroke:#7c3aed,color:#fff
+    style E1 fill:#64748b,stroke:#475569,color:#fff
+    style E2 fill:#64748b,stroke:#475569,color:#fff
+    style E3 fill:#64748b,stroke:#475569,color:#fff
                             </div>
                         </div>
                     </div>
@@ -324,35 +263,35 @@
                         <div class="c4-diagram">
                             <div class="diagram-title">Nivel 2: Diagrama de Contenedores</div>
                             <div class="mermaid">
-                            flowchart TB
-                                U[👤 Usuarios]
-                                
-                                subgraph "Sistema de Biblioteca Digital"
-                                    W[🌐 Aplicación Web<br/>React + TypeScript<br/>Interfaz responsive]
-                                    A[⚡ API REST<br/>Node.js + Express<br/>Clean Architecture]
-                                    D[🗄️ Base de Datos<br/>PostgreSQL<br/>Usuarios, libros, préstamos]
-                                    C[⚡ Cache<br/>Redis<br/>Sesiones y búsquedas]
-                                end
-                                
-                                E1[📚 Proveedor Contenido]
-                                E2[💳 Stripe]
-                                E3[📧 SendGrid]
-                                
-                                U --> W
-                                W --> A
-                                A --> D
-                                A --> C
-                                A --> E1
-                                A --> E2
-                                A --> E3
-                                
-                                style W fill:#3b82f6,stroke:#1d4ed8,color:#fff
-                                style A fill:#10b981,stroke:#059669,color:#fff
-                                style D fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                                style C fill:#f59e0b,stroke:#d97706,color:#fff
-                                style E1 fill:#64748b,stroke:#475569,color:#fff
-                                style E2 fill:#64748b,stroke:#475569,color:#fff
-                                style E3 fill:#64748b,stroke:#475569,color:#fff
+flowchart TB
+    U[👤 Usuarios]
+    
+    subgraph "Sistema de Biblioteca Digital"
+        W[🌐 Aplicación Web<br/>React + TypeScript<br/>Interfaz responsive]
+        A[⚡ API REST<br/>Node.js + Express<br/>Clean Architecture]
+        D[🗄️ Base de Datos<br/>PostgreSQL<br/>Usuarios, libros, préstamos]
+        C[⚡ Cache<br/>Redis<br/>Sesiones y búsquedas]
+    end
+    
+    E1[📚 Proveedor Contenido]
+    E2[💳 Stripe]
+    E3[📧 SendGrid]
+    
+    U --> W
+    W --> A
+    A --> D
+    A --> C
+    A --> E1
+    A --> E2
+    A --> E3
+    
+    style W fill:#3b82f6,stroke:#1d4ed8,color:#fff
+    style A fill:#10b981,stroke:#059669,color:#fff
+    style D fill:#8b5cf6,stroke:#7c3aed,color:#fff
+    style C fill:#f59e0b,stroke:#d97706,color:#fff
+    style E1 fill:#64748b,stroke:#475569,color:#fff
+    style E2 fill:#64748b,stroke:#475569,color:#fff
+    style E3 fill:#64748b,stroke:#475569,color:#fff
                             </div>
                         </div>
                     </div>
@@ -362,50 +301,50 @@
                         <div class="c4-diagram">
                             <div class="diagram-title">Nivel 3: Componentes de la API REST</div>
                             <div class="mermaid">
-                            flowchart TD
-                                subgraph P ["🖥️ PRESENTACIÓN"]
-                                    BC[BookController]
-                                    UC[UserController]
-                                    AC[AuthController]
-                                    MW[Middleware]
-                                end
-                                
-                                subgraph A ["📋 APLICACIÓN"]
-                                    BBU[BorrowBookUseCase]
-                                    SBU[SearchBooksUseCase]
-                                    RBU[ReserveBookUseCase]
-                                    SI[Service Interfaces]
-                                end
-                                
-                                subgraph D ["🎯 DOMINIO"]
-                                    UE[User Entity]
-                                    BE[Book Entity]
-                                    LE[Loan Entity]
-                                    RI[Repository Interfaces]
-                                end
-                                
-                                subgraph I ["🔧 INFRAESTRUCTURA"]
-                                    PR[PostgreSQL Repos]
-                                    ES[Email Service]
-                                    PS[Payment Service]
-                                    EA[External APIs]
-                                end
-                                
-                                BC --> BBU
-                                UC --> SBU
-                                AC --> RBU
-                                BBU --> UE
-                                SBU --> BE
-                                RBU --> LE
-                                SI --> RI
-                                PR --> RI
-                                ES --> SI
-                                PS --> SI
-                                
-                                style P fill:#ef4444,stroke:#dc2626,color:#fff
-                                style A fill:#8b5cf6,stroke:#7c3aed,color:#fff
-                                style D fill:#10b981,stroke:#059669,color:#fff
-                                style I fill:#f59e0b,stroke:#d97706,color:#fff
+flowchart TD
+    subgraph P ["🖥️ PRESENTACIÓN"]
+        BC[BookController]
+        UC[UserController]
+        AC[AuthController]
+        MW[Middleware]
+    end
+    
+    subgraph A ["📋 APLICACIÓN"]
+        BBU[BorrowBookUseCase]
+        SBU[SearchBooksUseCase]
+        RBU[ReserveBookUseCase]
+        SI[Service Interfaces]
+    end
+    
+    subgraph D ["🎯 DOMINIO"]
+        UE[User Entity]
+        BE[Book Entity]
+        LE[Loan Entity]
+        RI[Repository Interfaces]
+    end
+    
+    subgraph I ["🔧 INFRAESTRUCTURA"]
+        PR[PostgreSQL Repos]
+        ES[Email Service]
+        PS[Payment Service]
+        EA[External APIs]
+    end
+    
+    BC --> BBU
+    UC --> SBU
+    AC --> RBU
+    BBU --> UE
+    SBU --> BE
+    RBU --> LE
+    SI --> RI
+    PR --> RI
+    ES --> SI
+    PS --> SI
+    
+    style P fill:#ef4444,stroke:#dc2626,color:#fff
+    style A fill:#8b5cf6,stroke:#7c3aed,color:#fff
+    style D fill:#10b981,stroke:#059669,color:#fff
+    style I fill:#f59e0b,stroke:#d97706,color:#fff
                             </div>
                         </div>
                     </div>
@@ -415,45 +354,45 @@
                         <div class="c4-diagram">
                             <div class="diagram-title">Nivel 4: Estructura de Clases</div>
                             <div class="mermaid">
-                            classDiagram
-                                class BorrowBookUseCase {
-                                    -userRepository: IUserRepository
-                                    -bookRepository: IBookRepository
-                                    -loanRepository: ILoanRepository
-                                    +execute(userId, bookId) Promise~Loan~
-                                }
-                                
-                                class User {
-                                    -id: string
-                                    -email: string
-                                    -role: UserRole
-                                    +isPremium() boolean
-                                    +canBorrowBooks() boolean
-                                }
-                                
-                                class Book {
-                                    -id: string
-                                    -title: string
-                                    -status: BookStatus
-                                    +isAvailable() boolean
-                                    +requiresPremium() boolean
-                                }
-                                
-                                class Loan {
-                                    -id: string
-                                    -userId: string
-                                    -bookId: string
-                                    -borrowDate: Date
-                                    -dueDate: Date
-                                    +calculateFine() number
-                                    +isOverdue() boolean
-                                }
-                                
-                                BorrowBookUseCase --> User : uses
-                                BorrowBookUseCase --> Book : uses
-                                BorrowBookUseCase --> Loan : creates
-                                User --> Loan : has many
-                                Book --> Loan : has many
+classDiagram
+    class BorrowBookUseCase {
+        -userRepository: IUserRepository
+        -bookRepository: IBookRepository
+        -loanRepository: ILoanRepository
+        +execute(userId, bookId) Promise~Loan~
+    }
+    
+    class User {
+        -id: string
+        -email: string
+        -role: UserRole
+        +isPremium() boolean
+        +canBorrowBooks() boolean
+    }
+    
+    class Book {
+        -id: string
+        -title: string
+        -status: BookStatus
+        +isAvailable() boolean
+        +requiresPremium() boolean
+    }
+    
+    class Loan {
+        -id: string
+        -userId: string
+        -bookId: string
+        -borrowDate: Date
+        -dueDate: Date
+        +calculateFine() number
+        +isOverdue() boolean
+    }
+    
+    BorrowBookUseCase --> User : uses
+    BorrowBookUseCase --> Book : uses
+    BorrowBookUseCase --> Loan : creates
+    User --> Loan : has many
+    Book --> Loan : has many
                             </div>
                         </div>
                     </div>
@@ -573,37 +512,21 @@
         // Initialize Mermaid
         mermaid.initialize({ 
             startOnLoad: true,
-            theme: 'default',
-            themeVariables: {
-                primaryColor: '#3b82f6',
-                primaryTextColor: '#ffffff',
-                primaryBorderColor: '#1d4ed8',
-                lineColor: '#64748b'
-            }
+            theme: 'default'
         });
 
         // Tab functionality
         function showTab(tabId) {
-            // Hide all tab panels
             document.querySelectorAll('.tab-panel').forEach(panel => {
                 panel.classList.remove('active');
             });
             
-            // Remove active class from all buttons
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             
-            // Show selected tab panel
             document.getElementById(tabId).classList.add('active');
-            
-            // Add active class to clicked button
             event.target.classList.add('active');
-            
-            // Re-render Mermaid diagrams in the active tab
-            setTimeout(() => {
-                mermaid.init(undefined, document.querySelectorAll('#' + tabId + ' .mermaid'));
-            }, 100);
         }
 
         // Smooth scrolling for navigation links
