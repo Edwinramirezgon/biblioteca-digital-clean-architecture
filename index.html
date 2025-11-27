@@ -214,20 +214,10 @@ flowchart TD
         <section class="section" id="c4-model">
             <h2 class="section-title">📊 Modelo C4 - Documentación en 4 Niveles</h2>
             
-            <div class="c4-tabs">
-                <div class="tab-buttons">
-                    <button class="tab-btn active" onclick="showTab('nivel1')">🌍 Nivel 1: Contexto</button>
-                    <button class="tab-btn" onclick="showTab('nivel2')">📦 Nivel 2: Contenedores</button>
-                    <button class="tab-btn" onclick="showTab('nivel3')">🔧 Nivel 3: Componentes</button>
-                    <button class="tab-btn" onclick="showTab('nivel4')">💻 Nivel 4: Código</button>
-                </div>
-                
-                <div class="tab-content">
-                    <!-- Nivel 1: Contexto -->
-                    <div id="nivel1" class="tab-panel active">
-                        <div class="c4-diagram">
-                            <div class="diagram-title">Nivel 1: Diagrama de Contexto del Sistema</div>
-                            <div class="mermaid">
+            <!-- Nivel 1: Contexto -->
+            <div class="c4-diagram">
+                <div class="diagram-title">🌍 Nivel 1: Diagrama de Contexto del Sistema</div>
+                <div class="mermaid">
 flowchart TB
     subgraph "Usuarios"
         U1[👤 Lectores<br/>Buscan y leen libros]
@@ -254,15 +244,13 @@ flowchart TB
     style E1 fill:#64748b,stroke:#475569,color:#fff
     style E2 fill:#64748b,stroke:#475569,color:#fff
     style E3 fill:#64748b,stroke:#475569,color:#fff
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Nivel 2: Contenedores -->
-                    <div id="nivel2" class="tab-panel">
-                        <div class="c4-diagram">
-                            <div class="diagram-title">Nivel 2: Diagrama de Contenedores</div>
-                            <div class="mermaid">
+                </div>
+            </div>
+            
+            <!-- Nivel 2: Contenedores -->
+            <div class="c4-diagram">
+                <div class="diagram-title">📦 Nivel 2: Diagrama de Contenedores</div>
+                <div class="mermaid">
 flowchart TB
     U[👤 Usuarios]
     
@@ -292,15 +280,13 @@ flowchart TB
     style E1 fill:#64748b,stroke:#475569,color:#fff
     style E2 fill:#64748b,stroke:#475569,color:#fff
     style E3 fill:#64748b,stroke:#475569,color:#fff
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Nivel 3: Componentes -->
-                    <div id="nivel3" class="tab-panel">
-                        <div class="c4-diagram">
-                            <div class="diagram-title">Nivel 3: Componentes de la API REST</div>
-                            <div class="mermaid">
+                </div>
+            </div>
+            
+            <!-- Nivel 3: Componentes -->
+            <div class="c4-diagram">
+                <div class="diagram-title">🔧 Nivel 3: Componentes de la API REST</div>
+                <div class="mermaid">
 flowchart TD
     subgraph P ["🖥️ PRESENTACIÓN"]
         BC[BookController]
@@ -345,15 +331,13 @@ flowchart TD
     style A fill:#8b5cf6,stroke:#7c3aed,color:#fff
     style D fill:#10b981,stroke:#059669,color:#fff
     style I fill:#f59e0b,stroke:#d97706,color:#fff
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Nivel 4: Código -->
-                    <div id="nivel4" class="tab-panel">
-                        <div class="c4-diagram">
-                            <div class="diagram-title">Nivel 4: Estructura de Clases</div>
-                            <div class="mermaid">
+                </div>
+            </div>
+            
+            <!-- Nivel 4: Código -->
+            <div class="c4-diagram">
+                <div class="diagram-title">💻 Nivel 4: Estructura de Clases</div>
+                <div class="mermaid">
 classDiagram
     class BorrowBookUseCase {
         -userRepository: IUserRepository
@@ -393,9 +377,6 @@ classDiagram
     BorrowBookUseCase --> Loan : creates
     User --> Loan : has many
     Book --> Loan : has many
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -513,38 +494,6 @@ classDiagram
         mermaid.initialize({ 
             startOnLoad: true,
             theme: 'default'
-        });
-
-        // Tab functionality
-        function showTab(tabId) {
-            document.querySelectorAll('.tab-panel').forEach(panel => {
-                panel.classList.remove('active');
-            });
-            
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
-            
-            // Re-render Mermaid diagrams in the active tab
-            setTimeout(() => {
-                const activePanel = document.getElementById(tabId);
-                const mermaidElements = activePanel.querySelectorAll('.mermaid');
-                mermaidElements.forEach((element, index) => {
-                    if (!element.getAttribute('data-processed')) {
-                        mermaid.init(undefined, element);
-                    }
-                });
-            }, 100);
-        }
-
-        // Initialize all diagrams after page load
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                mermaid.init();
-            }, 500);
         });
 
         // Smooth scrolling for navigation links
