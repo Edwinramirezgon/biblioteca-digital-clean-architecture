@@ -4,270 +4,536 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📚 Biblioteca Digital - Clean Architecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; background: #f8fafc; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; background: #f8fafc; color: #334155; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        
+        /* Navigation */
+        .nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); z-index: 1000; padding: 15px 0; box-shadow: 0 2px 20px rgba(0,0,0,0.1); }
+        .nav-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .nav-logo { font-size: 1.5em; font-weight: bold; color: #3b82f6; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { text-decoration: none; color: #64748b; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: #3b82f6; }
         
         /* Hero Section */
-        .hero { text-align: center; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; padding: 80px 20px; border-radius: 16px; margin-bottom: 40px; box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3); }
-        .hero h1 { font-size: 4em; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-        .hero .subtitle { font-size: 1.5em; margin-bottom: 30px; opacity: 0.9; }
-        .hero .description { font-size: 1.2em; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .hero { margin-top: 80px; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 100px 20px; border-radius: 20px; margin-bottom: 60px; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>'); }
+        .hero-content { position: relative; z-index: 1; }
+        .hero h1 { font-size: 4.5em; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .hero .subtitle { font-size: 1.8em; margin-bottom: 30px; opacity: 0.95; }
+        .hero .description { font-size: 1.3em; margin-bottom: 40px; max-width: 900px; margin-left: auto; margin-right: auto; opacity: 0.9; }
         
         /* Buttons */
-        .btn { display: inline-block; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 15px 30px; text-decoration: none; border-radius: 10px; margin: 10px; font-weight: 600; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4); transition: all 0.3s; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(16, 185, 129, 0.6); }
-        .btn-secondary { background: linear-gradient(135deg, #8b5cf6, #7c3aed); box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4); }
-        .btn-secondary:hover { box-shadow: 0 12px 25px rgba(139, 92, 246, 0.6); }
+        .btn { display: inline-block; padding: 15px 35px; text-decoration: none; border-radius: 12px; font-weight: 600; transition: all 0.3s; margin: 10px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .btn-primary { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .btn-secondary { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(0,0,0,0.25); }
+        
+        /* Section Styles */
+        .section { margin: 80px 0; }
+        .section-title { font-size: 3em; text-align: center; margin-bottom: 50px; color: #1e293b; position: relative; }
+        .section-title::after { content: ''; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 100px; height: 4px; background: linear-gradient(90deg, #3b82f6, #8b5cf6); border-radius: 2px; }
         
         /* Architecture Cards */
-        .architecture-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin: 50px 0; }
-        .arch-card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.3s; position: relative; overflow: hidden; }
-        .arch-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); }
+        .arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin: 50px 0; }
+        .arch-card { background: white; border-radius: 20px; padding: 35px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); transition: all 0.4s; position: relative; overflow: hidden; }
+        .arch-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
         .arch-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; }
         .domain::before { background: linear-gradient(90deg, #10b981, #059669); }
         .application::before { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
         .infrastructure::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
         .presentation::before { background: linear-gradient(90deg, #ef4444, #dc2626); }
         
-        .arch-card h3 { font-size: 1.5em; margin-bottom: 15px; color: #1e293b; }
-        .arch-card .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 600; color: white; margin-bottom: 15px; }
-        .domain .badge { background: #10b981; }
-        .application .badge { background: #8b5cf6; }
-        .infrastructure .badge { background: #f59e0b; }
-        .presentation .badge { background: #ef4444; }
+        .arch-card .icon { font-size: 3.5em; margin-bottom: 20px; }
+        .arch-card h3 { font-size: 1.8em; margin-bottom: 15px; color: #1e293b; }
+        .arch-card .badge { display: inline-block; padding: 6px 15px; border-radius: 25px; font-size: 0.85em; font-weight: 700; color: white; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        .domain .badge { background: linear-gradient(135deg, #10b981, #059669); }
+        .application .badge { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .infrastructure .badge { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .presentation .badge { background: linear-gradient(135deg, #ef4444, #dc2626); }
         
-        /* Sections */
-        .section { margin: 60px 0; }
-        .section h2 { font-size: 2.5em; color: #1e293b; margin-bottom: 30px; text-align: center; position: relative; }
-        .section h2::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: linear-gradient(90deg, #3b82f6, #1d4ed8); border-radius: 2px; }
+        /* Diagram Container */
+        .diagram-container { background: white; border-radius: 15px; padding: 30px; margin: 40px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .diagram-title { font-size: 1.5em; color: #1e293b; margin-bottom: 20px; text-align: center; }
+        .mermaid { background: #fafafa; border-radius: 10px; padding: 20px; }
+        
+        /* C4 Model Grid */
+        .c4-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .c4-card { background: white; border-radius: 15px; padding: 30px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: all 0.3s; }
+        .c4-card:hover { transform: translateY(-5px); }
+        .c4-card .level-icon { font-size: 4em; margin-bottom: 20px; }
+        .c4-card h4 { font-size: 1.4em; color: #1e293b; margin-bottom: 15px; }
         
         /* Features Grid */
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .feature-item { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); border-left: 5px solid #3b82f6; }
-        .feature-item h4 { color: #1e293b; margin-bottom: 10px; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .feature-card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.06); border-left: 5px solid #3b82f6; transition: all 0.3s; }
+        .feature-card:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,0,0,0.12); }
+        .feature-card h4 { color: #1e293b; margin-bottom: 10px; font-size: 1.2em; }
         
-        /* C4 Model */
-        .c4-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .c4-item { background: white; padding: 25px; border-radius: 12px; text-align: center; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); }
-        .c4-item .icon { font-size: 3em; margin-bottom: 15px; }
-        .c4-item h4 { color: #1e293b; margin-bottom: 10px; }
+        /* SOLID Principles */
+        .solid-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .solid-card { background: linear-gradient(135deg, #f8fafc, #e2e8f0); border-radius: 15px; padding: 25px; text-align: center; border: 2px solid #e2e8f0; transition: all 0.3s; }
+        .solid-card:hover { border-color: #3b82f6; transform: translateY(-3px); }
+        .solid-card .principle-icon { font-size: 3em; margin-bottom: 15px; }
+        .solid-card h4 { color: #1e293b; margin-bottom: 10px; }
         
         /* Tech Stack */
-        .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .tech-item { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05); border-left: 4px solid #3b82f6; }
-        .tech-item strong { color: #1e293b; }
+        .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .tech-item { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-left: 4px solid #3b82f6; }
+        .tech-item strong { color: #1e293b; display: block; margin-bottom: 5px; }
         
-        /* Benefits */
-        .benefits { background: linear-gradient(135deg, #f8fafc, #e2e8f0); padding: 40px; border-radius: 16px; margin: 40px 0; }
-        .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .benefit-item { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05); }
-        .benefit-item .emoji { font-size: 2em; margin-bottom: 10px; }
+        /* Code Example */
+        .code-container { background: #1e293b; color: #e2e8f0; border-radius: 12px; padding: 25px; margin: 30px 0; overflow-x: auto; }
+        .code-title { color: #60a5fa; margin-bottom: 15px; font-weight: 600; }
+        pre { margin: 0; font-family: 'Monaco', 'Menlo', monospace; font-size: 0.9em; line-height: 1.5; }
+        .keyword { color: #c792ea; }
+        .string { color: #c3e88d; }
+        .comment { color: #546e7a; }
         
         /* Footer */
-        .footer { background: linear-gradient(135deg, #1e293b, #334155); color: white; padding: 50px 20px; border-radius: 16px; text-align: center; margin-top: 60px; }
-        .footer h3 { margin-bottom: 20px; }
-        .footer p { opacity: 0.9; margin-bottom: 30px; }
+        .footer { background: linear-gradient(135deg, #1e293b, #334155); color: white; padding: 60px 20px; border-radius: 20px; text-align: center; margin-top: 80px; }
+        .footer h3 { margin-bottom: 20px; font-size: 2em; }
+        .footer p { opacity: 0.9; margin-bottom: 30px; font-size: 1.1em; }
         
         /* Responsive */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5em; }
-            .hero .subtitle { font-size: 1.2em; }
-            .architecture-grid { grid-template-columns: 1fr; }
-            .arch-card { padding: 20px; }
+            .hero h1 { font-size: 2.8em; }
+            .hero .subtitle { font-size: 1.3em; }
+            .nav-links { display: none; }
+            .arch-grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 2.2em; }
         }
+        
+        /* Animations */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeInUp 0.6s ease-out; }
     </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="nav-logo">📚 Biblioteca Digital</div>
+            <div class="nav-links">
+                <a href="#arquitectura">Arquitectura</a>
+                <a href="#c4-model">Modelo C4</a>
+                <a href="#funcionalidades">Funcionalidades</a>
+                <a href="#codigo">Código</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
         <!-- Hero Section -->
-        <div class="hero">
-            <h1>📚 Biblioteca Digital</h1>
-            <div class="subtitle">Clean Architecture + Modelo C4</div>
-            <div class="description">
-                Sistema completo de gestión de bibliotecas digitales implementando los principios de 
-                <strong>Arquitectura Limpia</strong> de Robert C. Martin y documentado con el <strong>Modelo C4</strong>
+        <section class="hero fade-in">
+            <div class="hero-content">
+                <h1>📚 Biblioteca Digital</h1>
+                <div class="subtitle">Clean Architecture + Modelo C4</div>
+                <div class="description">
+                    Sistema completo de gestión de bibliotecas digitales implementando los principios de 
+                    <strong>Arquitectura Limpia</strong> de Robert C. Martin y documentado con el <strong>Modelo C4</strong>
+                </div>
+                <a href="https://github.com/Edwinramirezgon/biblioteca-digital-clean-architecture" class="btn btn-primary">🚀 Ver Código Completo</a>
+                <a href="#arquitectura" class="btn btn-secondary">📖 Explorar Arquitectura</a>
             </div>
-            <a href="https://github.com/Edwinramirezgon/biblioteca-digital-clean-architecture" class="btn">🚀 Ver Código Completo</a>
-            <a href="#arquitectura" class="btn btn-secondary">📖 Explorar Arquitectura</a>
-        </div>
+        </section>
 
         <!-- Arquitectura Section -->
-        <div class="section" id="arquitectura">
-            <h2>🏗️ Arquitectura en Capas Concéntricas</h2>
-            <div class="architecture-grid">
+        <section class="section" id="arquitectura">
+            <h2 class="section-title">🏗️ Arquitectura en Capas Concéntricas</h2>
+            
+            <div class="diagram-container">
+                <div class="diagram-title">Diagrama de Dependencias - Clean Architecture</div>
+                <div class="mermaid">
+                graph TB
+                    subgraph "🖥️ PRESENTACIÓN"
+                        P1[Controllers]
+                        P2[Routes] 
+                        P3[Middleware]
+                    end
+                    
+                    subgraph "🔧 INFRAESTRUCTURA"
+                        I1[PostgreSQL Repositories]
+                        I2[External Services]
+                        I3[Email Service]
+                        I4[Payment Service]
+                    end
+                    
+                    subgraph "📋 APLICACIÓN"
+                        A1[BorrowBookUseCase]
+                        A2[SearchBooksUseCase]
+                        A3[ReserveBookUseCase]
+                        A4[Service Interfaces]
+                    end
+                    
+                    subgraph "🎯 DOMINIO"
+                        D1[User Entity]
+                        D2[Book Entity]
+                        D3[Loan Entity]
+                        D4[Repository Interfaces]
+                    end
+                    
+                    P1 --> A1
+                    P2 --> A2
+                    P3 --> A3
+                    I1 -.-> D4
+                    I2 -.-> A4
+                    I3 -.-> A4
+                    I4 -.-> A4
+                    A1 --> D1
+                    A1 --> D2
+                    A2 --> D2
+                    A3 --> D1
+                    A1 --> D4
+                    A2 --> D4
+                    A3 --> D4
+                    
+                    style D1 fill:#10b981,stroke:#059669,color:#fff
+                    style D2 fill:#10b981,stroke:#059669,color:#fff
+                    style D3 fill:#10b981,stroke:#059669,color:#fff
+                    style D4 fill:#10b981,stroke:#059669,color:#fff
+                    style A1 fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                    style A2 fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                    style A3 fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                    style A4 fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                    style I1 fill:#f59e0b,stroke:#d97706,color:#fff
+                    style I2 fill:#f59e0b,stroke:#d97706,color:#fff
+                    style I3 fill:#f59e0b,stroke:#d97706,color:#fff
+                    style I4 fill:#f59e0b,stroke:#d97706,color:#fff
+                    style P1 fill:#ef4444,stroke:#dc2626,color:#fff
+                    style P2 fill:#ef4444,stroke:#dc2626,color:#fff
+                    style P3 fill:#ef4444,stroke:#dc2626,color:#fff
+                </div>
+            </div>
+
+            <div class="arch-grid">
                 <div class="arch-card domain">
+                    <div class="icon">🎯</div>
                     <div class="badge">CORE</div>
-                    <h3>🎯 Capa de Dominio</h3>
+                    <h3>Capa de Dominio</h3>
                     <p><strong>Entidades:</strong> User, Book, Loan, Reservation</p>
-                    <p><strong>Responsabilidad:</strong> Reglas de negocio puras e invariantes del dominio</p>
+                    <p><strong>Responsabilidad:</strong> Reglas de negocio puras e invariantes</p>
                     <p><strong>Dependencias:</strong> NINGUNA - Completamente independiente</p>
                 </div>
                 
                 <div class="arch-card application">
+                    <div class="icon">📋</div>
                     <div class="badge">USE CASES</div>
-                    <h3>📋 Capa de Aplicación</h3>
+                    <h3>Capa de Aplicación</h3>
                     <p><strong>Casos de Uso:</strong> BorrowBook, SearchBooks, ReserveBook</p>
                     <p><strong>Responsabilidad:</strong> Orquestación y lógica de aplicación</p>
                     <p><strong>Dependencias:</strong> Solo hacia el dominio</p>
                 </div>
                 
                 <div class="arch-card infrastructure">
+                    <div class="icon">🔧</div>
                     <div class="badge">ADAPTERS</div>
-                    <h3>🔧 Capa de Infraestructura</h3>
-                    <p><strong>Implementaciones:</strong> Repositorios PostgreSQL, servicios externos</p>
-                    <p><strong>Responsabilidad:</strong> Detalles técnicos y comunicación externa</p>
-                    <p><strong>Dependencias:</strong> Hacia aplicación y dominio (vía interfaces)</p>
+                    <h3>Capa de Infraestructura</h3>
+                    <p><strong>Implementaciones:</strong> Repositorios, servicios externos</p>
+                    <p><strong>Responsabilidad:</strong> Detalles técnicos y comunicación</p>
+                    <p><strong>Dependencias:</strong> Hacia aplicación (vía interfaces)</p>
                 </div>
                 
                 <div class="arch-card presentation">
+                    <div class="icon">🖥️</div>
                     <div class="badge">UI/API</div>
-                    <h3>🖥️ Capa de Presentación</h3>
+                    <h3>Capa de Presentación</h3>
                     <p><strong>Componentes:</strong> Controllers, Routes, Middleware</p>
                     <p><strong>Responsabilidad:</strong> Interfaz con el mundo exterior</p>
                     <p><strong>Dependencias:</strong> Solo hacia casos de uso</p>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Modelo C4 Section -->
-        <div class="section">
-            <h2>📊 Modelo C4 - Documentación en 4 Niveles</h2>
+        <section class="section" id="c4-model">
+            <h2 class="section-title">📊 Modelo C4 - Documentación en 4 Niveles</h2>
+            
+            <div class="diagram-container">
+                <div class="diagram-title">Nivel 1: Diagrama de Contexto del Sistema</div>
+                <div class="mermaid">
+                C4Context
+                    title Sistema de Biblioteca Digital - Contexto
+
+                    Person(reader, "Lector", "Usuario que busca y lee libros")
+                    Person(admin, "Administrador", "Gestiona inventario y políticas")
+                    
+                    System(biblioteca, "Sistema de Biblioteca Digital", "Permite gestionar préstamos, reservas y lectura de libros")
+                    
+                    System_Ext(contentProvider, "Proveedor de Contenido", "Suministra libros digitales")
+                    System_Ext(paymentGateway, "Pasarela de Pago", "Procesa pagos de membresías")
+                    System_Ext(emailService, "Servicio de Email", "Envía notificaciones")
+                    
+                    Rel(reader, biblioteca, "Busca libros, hace préstamos y reservas")
+                    Rel(admin, biblioteca, "Gestiona inventario y usuarios")
+                    Rel(biblioteca, contentProvider, "Obtiene contenido digital")
+                    Rel(biblioteca, paymentGateway, "Procesa pagos")
+                    Rel(biblioteca, emailService, "Envía notificaciones")
+                </div>
+            </div>
+
+            <div class="diagram-container">
+                <div class="diagram-title">Nivel 2: Diagrama de Contenedores</div>
+                <div class="mermaid">
+                C4Container
+                    title Sistema de Biblioteca Digital - Contenedores
+
+                    Person(reader, "Lector")
+                    Person(admin, "Administrador")
+                    
+                    Container_Boundary(c1, "Sistema de Biblioteca Digital") {
+                        Container(webapp, "Aplicación Web", "React + TypeScript", "Interfaz de usuario")
+                        Container(api, "API REST", "Node.js + Express", "Lógica de negocio")
+                        Container(database, "Base de Datos", "PostgreSQL", "Almacena datos")
+                        Container(cache, "Cache", "Redis", "Cache de sesiones")
+                    }
+                    
+                    System_Ext(contentProvider, "Proveedor de Contenido")
+                    System_Ext(paymentGateway, "Pasarela de Pago")
+                    System_Ext(emailService, "Servicio de Email")
+                    
+                    Rel(reader, webapp, "Usa", "HTTPS")
+                    Rel(admin, webapp, "Usa", "HTTPS")
+                    Rel(webapp, api, "Hace llamadas API", "JSON/HTTPS")
+                    Rel(api, database, "Lee y escribe", "SQL/TCP")
+                    Rel(api, cache, "Cache", "Redis Protocol")
+                    Rel(api, contentProvider, "Obtiene libros", "HTTPS")
+                    Rel(api, paymentGateway, "Procesa pagos", "HTTPS")
+                    Rel(api, emailService, "Envía emails", "HTTPS")
+                </div>
+            </div>
+
             <div class="c4-grid">
-                <div class="c4-item">
-                    <div class="icon">🌍</div>
+                <div class="c4-card">
+                    <div class="level-icon">🌍</div>
                     <h4>Nivel 1: Contexto</h4>
                     <p>Sistema en su entorno con actores (Lectores, Admins) y sistemas externos</p>
                 </div>
-                <div class="c4-item">
-                    <div class="icon">📦</div>
+                <div class="c4-card">
+                    <div class="level-icon">📦</div>
                     <h4>Nivel 2: Contenedores</h4>
                     <p>Arquitectura de alto nivel: Web App, API REST, Database, Cache</p>
                 </div>
-                <div class="c4-item">
-                    <div class="icon">🔧</div>
+                <div class="c4-card">
+                    <div class="level-icon">🔧</div>
                     <h4>Nivel 3: Componentes</h4>
                     <p>Componentes detallados por cada capa de Clean Architecture</p>
                 </div>
-                <div class="c4-item">
-                    <div class="icon">💻</div>
+                <div class="c4-card">
+                    <div class="level-icon">💻</div>
                     <h4>Nivel 4: Código</h4>
                     <p>Diagramas de clases, interfaces y patrones implementados</p>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Funcionalidades Section -->
-        <div class="section">
-            <h2>✅ Funcionalidades Implementadas</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <h4>🔍 Búsqueda Avanzada</h4>
-                    <p>Búsqueda de libros con múltiples criterios: título, autor, género, formato</p>
-                </div>
-                <div class="feature-item">
-                    <h4>📚 Préstamos Inteligentes</h4>
-                    <p>Gestión de préstamos físicos y digitales con validaciones de negocio</p>
-                </div>
-                <div class="feature-item">
-                    <h4>🔖 Sistema de Reservas</h4>
-                    <p>Reservas automáticas con notificaciones por email cuando están disponibles</p>
-                </div>
-                <div class="feature-item">
-                    <h4>👑 Membresías Premium</h4>
-                    <p>Beneficios adicionales, límites extendidos y acceso a contenido exclusivo</p>
-                </div>
-                <div class="feature-item">
-                    <h4>📊 Historial Completo</h4>
-                    <p>Seguimiento detallado de préstamos, devoluciones y actividad del usuario</p>
-                </div>
-                <div class="feature-item">
-                    <h4>🔧 Panel Administrativo</h4>
-                    <p>Gestión de inventario, usuarios, políticas y generación de reportes</p>
+        <section class="section" id="funcionalidades">
+            <h2 class="section-title">✅ Funcionalidades Implementadas</h2>
+            
+            <div class="diagram-container">
+                <div class="diagram-title">Flujo de Casos de Uso Principales</div>
+                <div class="mermaid">
+                flowchart LR
+                    U[👤 Usuario] --> S[🔍 Buscar Libros]
+                    U --> B[📚 Tomar Prestado]
+                    U --> R[🔖 Reservar]
+                    U --> H[📊 Ver Historial]
+                    
+                    A[👨‍💼 Admin] --> M[📋 Gestionar Inventario]
+                    A --> P[💰 Configurar Políticas]
+                    A --> Rep[📈 Generar Reportes]
+                    
+                    S --> DB[(🗄️ Base de Datos)]
+                    B --> DB
+                    R --> N[📧 Notificaciones]
+                    B --> Pay[💳 Pagos]
+                    
+                    style U fill:#3b82f6,stroke:#1d4ed8,color:#fff
+                    style A fill:#10b981,stroke:#059669,color:#fff
+                    style DB fill:#f59e0b,stroke:#d97706,color:#fff
+                    style N fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                    style Pay fill:#ef4444,stroke:#dc2626,color:#fff
                 </div>
             </div>
-        </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>🔍 Búsqueda Avanzada</h4>
+                    <p>Búsqueda de libros con múltiples criterios: título, autor, género, formato, disponibilidad</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📚 Préstamos Inteligentes</h4>
+                    <p>Gestión de préstamos físicos y digitales con validaciones automáticas de negocio</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔖 Sistema de Reservas</h4>
+                    <p>Reservas automáticas con notificaciones por email cuando los libros están disponibles</p>
+                </div>
+                <div class="feature-card">
+                    <h4>👑 Membresías Premium</h4>
+                    <p>Beneficios adicionales, límites extendidos y acceso a contenido digital exclusivo</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 Historial Completo</h4>
+                    <p>Seguimiento detallado de préstamos, devoluciones y toda la actividad del usuario</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔧 Panel Administrativo</h4>
+                    <p>Gestión completa de inventario, usuarios, políticas y generación de reportes</p>
+                </div>
+            </div>
+        </section>
 
         <!-- Principios SOLID -->
-        <div class="benefits">
-            <h2 style="color: #1e293b; margin-bottom: 30px;">⚡ Principios SOLID Aplicados</h2>
-            <div class="benefits-grid">
-                <div class="benefit-item">
-                    <div class="emoji">🎯</div>
+        <section class="section">
+            <h2 class="section-title">⚡ Principios SOLID Aplicados</h2>
+            <div class="solid-grid">
+                <div class="solid-card">
+                    <div class="principle-icon">🎯</div>
                     <h4>Single Responsibility</h4>
                     <p>Cada clase tiene una sola razón para cambiar</p>
                 </div>
-                <div class="benefit-item">
-                    <div class="emoji">🔓</div>
+                <div class="solid-card">
+                    <div class="principle-icon">🔓</div>
                     <h4>Open/Closed</h4>
                     <p>Abierto para extensión, cerrado para modificación</p>
                 </div>
-                <div class="benefit-item">
-                    <div class="emoji">🔄</div>
+                <div class="solid-card">
+                    <div class="principle-icon">🔄</div>
                     <h4>Liskov Substitution</h4>
                     <p>Objetos intercambiables sin alterar funcionamiento</p>
                 </div>
-                <div class="benefit-item">
-                    <div class="emoji">🔌</div>
+                <div class="solid-card">
+                    <div class="principle-icon">🔌</div>
                     <h4>Interface Segregation</h4>
                     <p>Interfaces específicas y cohesivas</p>
                 </div>
-                <div class="benefit-item">
-                    <div class="emoji">🔄</div>
+                <div class="solid-card">
+                    <div class="principle-icon">🔄</div>
                     <h4>Dependency Inversion</h4>
-                    <p>Dependencias hacia abstracciones, no concreciones</p>
+                    <p>Dependencias hacia abstracciones</p>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <!-- Código Section -->
+        <section class="section" id="codigo">
+            <h2 class="section-title">💻 Implementación de Código</h2>
+            
+            <div class="diagram-container">
+                <div class="diagram-title">Diagrama de Clases - Entidades de Dominio</div>
+                <div class="mermaid">
+                classDiagram
+                    class User {
+                        -string id
+                        -string email
+                        -string name
+                        -UserRole role
+                        -MembershipType membershipType
+                        +isPremium() boolean
+                        +canBorrowBooks() boolean
+                    }
+                    
+                    class Book {
+                        -string id
+                        -string title
+                        -string author
+                        -BookFormat format
+                        -BookStatus status
+                        -number availableCopies
+                        +isAvailable() boolean
+                        +requiresPremium() boolean
+                    }
+                    
+                    class Loan {
+                        -string id
+                        -string userId
+                        -string bookId
+                        -Date loanDate
+                        -Date dueDate
+                        -LoanStatus status
+                        +isOverdue() boolean
+                        +calculateFine() number
+                    }
+                    
+                    User ||--o{ Loan : "has many"
+                    Book ||--o{ Loan : "can have many"
+                    
+                    style User fill:#10b981,stroke:#059669,color:#fff
+                    style Book fill:#10b981,stroke:#059669,color:#fff
+                    style Loan fill:#10b981,stroke:#059669,color:#fff
+                </div>
+            </div>
+
+            <div class="code-container">
+                <div class="code-title">Ejemplo: Caso de Uso - Préstamo de Libro</div>
+                <pre><code><span class="keyword">export class</span> BorrowBookUseCase {
+  <span class="keyword">constructor</span>(
+    <span class="keyword">private</span> userRepository: IUserRepository,
+    <span class="keyword">private</span> bookRepository: IBookRepository,
+    <span class="keyword">private</span> loanRepository: ILoanRepository
+  ) {}
+
+  <span class="keyword">async</span> execute(userId: <span class="keyword">string</span>, bookId: <span class="keyword">string</span>): Promise&lt;Loan&gt; {
+    <span class="comment">// 1. Validar usuario</span>
+    <span class="keyword">const</span> user = <span class="keyword">await</span> <span class="keyword">this</span>.userRepository.findById(userId);
+    <span class="keyword">if</span> (!user?.canBorrowBooks()) {
+      <span class="keyword">throw new</span> Error(<span class="string">'Usuario no puede tomar prestados'</span>);
+    }
+
+    <span class="comment">// 2. Validar libro</span>
+    <span class="keyword">const</span> book = <span class="keyword">await</span> <span class="keyword">this</span>.bookRepository.findById(bookId);
+    <span class="keyword">if</span> (!book?.isAvailable()) {
+      <span class="keyword">throw new</span> Error(<span class="string">'Libro no disponible'</span>);
+    }
+
+    <span class="comment">// 3. Aplicar reglas de negocio</span>
+    <span class="keyword">if</span> (book.requiresPremium() && !user.isPremium()) {
+      <span class="keyword">throw new</span> Error(<span class="string">'Requiere membresía premium'</span>);
+    }
+
+    <span class="comment">// 4. Crear y persistir préstamo</span>
+    <span class="keyword">const</span> loan = <span class="keyword">new</span> Loan(userId, bookId, <span class="keyword">new</span> Date());
+    <span class="keyword">return await</span> <span class="keyword">this</span>.loanRepository.save(loan);
+  }
+}</code></pre>
+            </div>
+        </section>
 
         <!-- Stack Tecnológico -->
-        <div class="section">
-            <h2>🚀 Stack Tecnológico</h2>
+        <section class="section">
+            <h2 class="section-title">🚀 Stack Tecnológico</h2>
             <div class="tech-grid">
                 <div class="tech-item">
-                    <strong>Backend:</strong><br>Node.js + TypeScript + Express
+                    <strong>Backend</strong>
+                    Node.js + TypeScript + Express
                 </div>
                 <div class="tech-item">
-                    <strong>Base de datos:</strong><br>PostgreSQL + Redis
+                    <strong>Base de datos</strong>
+                    PostgreSQL + Redis
                 </div>
                 <div class="tech-item">
-                    <strong>Testing:</strong><br>Jest + Supertest + Coverage
+                    <strong>Testing</strong>
+                    Jest + Supertest + Coverage
                 </div>
                 <div class="tech-item">
-                    <strong>Servicios:</strong><br>Stripe + SendGrid + AWS S3
+                    <strong>Servicios</strong>
+                    Stripe + SendGrid + AWS S3
                 </div>
                 <div class="tech-item">
-                    <strong>Documentación:</strong><br>VitePress + Mermaid
+                    <strong>Documentación</strong>
+                    VitePress + Mermaid
                 </div>
                 <div class="tech-item">
-                    <strong>CI/CD:</strong><br>GitHub Actions + Pages
+                    <strong>CI/CD</strong>
+                    GitHub Actions + Pages
                 </div>
             </div>
-        </div>
-
-        <!-- Testing -->
-        <div class="section">
-            <h2>🧪 Testing Comprehensivo</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <h4>⚡ Tests Unitarios</h4>
-                    <p>Entidades de dominio y casos de uso con mocks completos</p>
-                </div>
-                <div class="feature-item">
-                    <h4>🔗 Tests de Integración</h4>
-                    <p>Repositorios con base de datos real y validación de flujos</p>
-                </div>
-                <div class="feature-item">
-                    <h4>🌐 Tests E2E</h4>
-                    <p>API completa con casos de uso reales de principio a fin</p>
-                </div>
-                <div class="feature-item">
-                    <h4>📊 Coverage</h4>
-                    <p>Cobertura >80% con CI/CD automatizado y reportes detallados</p>
-                </div>
-            </div>
-        </div>
+        </section>
 
         <!-- Footer -->
         <div class="footer">
@@ -276,11 +542,59 @@
                 Implementación profesional siguiendo principios SOLID • Modelo C4 documentado • 
                 Testing comprehensivo • Casos de uso reales funcionando
             </p>
-            <a href="https://github.com/Edwinramirezgon/biblioteca-digital-clean-architecture" class="btn">Ver Código en GitHub</a>
+            <a href="https://github.com/Edwinramirezgon/biblioteca-digital-clean-architecture" class="btn btn-primary">Ver Código en GitHub</a>
             <p style="margin-top: 30px; opacity: 0.8; font-size: 0.9em;">
                 Desarrollado como demostración de Clean Architecture y mejores prácticas de desarrollo de software
             </p>
         </div>
     </div>
+
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#3b82f6',
+                primaryTextColor: '#1e293b',
+                primaryBorderColor: '#1d4ed8',
+                lineColor: '#64748b',
+                secondaryColor: '#f1f5f9',
+                tertiaryColor: '#f8fafc'
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section, .arch-card, .c4-card, .feature-card').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
