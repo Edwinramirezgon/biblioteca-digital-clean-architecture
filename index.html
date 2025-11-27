@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📚 Biblioteca Digital - Clean Architecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; background: #f8fafc; color: #334155; }
@@ -58,59 +59,8 @@
         .c4-diagram { background: white; border-radius: 15px; padding: 40px; margin: 30px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
         .diagram-title { font-size: 1.8em; color: #1e293b; margin-bottom: 30px; text-align: center; }
         
-        /* Context Diagram */
-        .context-diagram { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 30px; align-items: center; min-height: 400px; position: relative; }
-        .actors { display: flex; flex-direction: column; gap: 20px; }
-        .actor { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; padding: 20px; border-radius: 12px; text-align: center; }
-        .system-center { display: flex; align-items: center; justify-content: center; }
-        .main-system { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 40px; border-radius: 20px; text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center; }
-        .external-systems { display: flex; flex-direction: column; gap: 20px; }
-        .external-system { background: linear-gradient(135deg, #64748b, #475569); color: white; padding: 20px; border-radius: 12px; text-align: center; }
-        
-        /* Arrows for Context Diagram */
-        .context-diagram::before { content: '→'; position: absolute; left: 25%; top: 50%; transform: translateY(-50%); font-size: 2em; color: #3b82f6; z-index: 10; }
-        .context-diagram::after { content: '→'; position: absolute; right: 25%; top: 50%; transform: translateY(-50%); font-size: 2em; color: #64748b; z-index: 10; }
-        
-        /* Container Diagram */
-        .container-diagram { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; position: relative; }
-        .container-item { background: linear-gradient(135deg, #f8fafc, #e2e8f0); border: 2px solid #e2e8f0; padding: 30px; border-radius: 15px; text-align: center; transition: all 0.3s; }
-        .container-item:hover { transform: translateY(-5px); border-color: #3b82f6; }
-        .container-item h4 { color: #1e293b; margin-bottom: 15px; }
-        .webapp { border-left: 6px solid #3b82f6; }
-        .api { border-left: 6px solid #10b981; }
-        .database { border-left: 6px solid #8b5cf6; }
-        .cache { border-left: 6px solid #f59e0b; }
-        
-        /* Arrows for Container Diagram */
-        .container-diagram::before { content: '↓'; position: absolute; top: 25%; left: 50%; transform: translateX(-50%); font-size: 2em; color: #10b981; z-index: 10; }
-        .container-diagram::after { content: '↓'; position: absolute; bottom: 25%; left: 50%; transform: translateX(-50%); font-size: 2em; color: #8b5cf6; z-index: 10; }
-        
-        /* Component Diagram */
-        .component-diagram { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; position: relative; }
-        .component-layer { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
-        .layer-presentation { border-top: 4px solid #ef4444; }
-        .layer-application { border-top: 4px solid #8b5cf6; }
-        .layer-domain { border-top: 4px solid #10b981; }
-        .layer-infrastructure { border-top: 4px solid #f59e0b; }
-        .component-item { background: #f8fafc; padding: 10px; margin: 8px 0; border-radius: 6px; font-size: 0.9em; text-align: center; }
-        
-        /* Dependency Arrows */
-        .component-diagram .arrow { position: absolute; font-size: 1.5em; color: #64748b; }
-        .component-diagram .arrow-1 { top: 50%; left: 12.5%; content: '→'; }
-        .component-diagram .arrow-2 { top: 50%; left: 37.5%; content: '→'; }
-        .component-diagram .arrow-3 { top: 50%; left: 62.5%; content: '→'; }
-        
-        /* Code Diagram */
-        .code-diagram { display: flex; justify-content: center; align-items: center; position: relative; }
-        .class-diagram { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 900px; }
-        .class-box { background: white; border: 2px solid #e2e8f0; border-radius: 10px; overflow: hidden; }
-        .class-header { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 15px; text-align: center; font-weight: bold; }
-        .class-body { padding: 15px; }
-        .class-method { background: #f8fafc; padding: 8px; margin: 5px 0; border-radius: 4px; font-size: 0.85em; }
-        
-        /* Class Relationships */
-        .code-diagram::before { content: 'uses →'; position: absolute; top: 30%; left: 20%; font-size: 1.2em; color: #8b5cf6; }
-        .code-diagram::after { content: 'uses →'; position: absolute; top: 30%; right: 20%; font-size: 1.2em; color: #8b5cf6; }
+        /* Mermaid Diagram Styling */
+        .mermaid { background: #fafafa; border-radius: 10px; padding: 20px; margin: 20px 0; }
         
         /* Architecture Cards */
         .arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin: 50px 0; }
@@ -169,9 +119,7 @@
             .application-circle { width: 150px; height: 150px; }
             .infrastructure-circle { width: 200px; height: 200px; }
             .presentation-circle { width: 250px; height: 250px; }
-            .context-diagram::before, .context-diagram::after { display: none; }
-            .container-diagram::before, .container-diagram::after { display: none; }
-            .code-diagram::before, .code-diagram::after { display: none; }
+            .mermaid { padding: 10px; overflow-x: auto; }
         }
     </style>
 </head>
@@ -285,7 +233,34 @@
                     <div id="nivel1" class="tab-panel active">
                         <div class="c4-diagram">
                             <div class="diagram-title">Nivel 1: Diagrama de Contexto del Sistema</div>
-                            <div class="context-diagram">
+                            <div class="mermaid">
+                            flowchart TB
+                                subgraph "Usuarios"
+                                    U1[👤 Lectores<br/>Buscan y leen libros]
+                                    U2[👨💼 Administradores<br/>Gestionan sistema]
+                                end
+                                
+                                S[📚 Sistema de Biblioteca Digital<br/>Gestiona préstamos, reservas y lectura]
+                                
+                                subgraph "Sistemas Externos"
+                                    E1[📖 Proveedor de Contenido<br/>Libros digitales]
+                                    E2[💳 Pasarela de Pago<br/>Stripe]
+                                    E3[📧 Servicio de Email<br/>SendGrid]
+                                end
+                                
+                                U1 --> S
+                                U2 --> S
+                                S --> E1
+                                S --> E2
+                                S --> E3
+                                
+                                style U1 fill:#3b82f6,stroke:#1d4ed8,color:#fff
+                                style U2 fill:#10b981,stroke:#059669,color:#fff
+                                style S fill:#8b5cf6,stroke:#7c3aed,color:#fff
+                                style E1 fill:#64748b,stroke:#475569,color:#fff
+                                style E2 fill:#64748b,stroke:#475569,color:#fff
+                                style E3 fill:#64748b,stroke:#475569,color:#fff
+                            </div>
                                 <div class="actors">
                                     <div class="actor">
                                         <h4>👤 Lectores</h4>
