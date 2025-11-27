@@ -37,8 +37,8 @@
         /* Clean Architecture Diagram */
         .clean-arch-diagram { display: flex; justify-content: center; align-items: center; margin: 50px 0; min-height: 500px; }
         .arch-circles { position: relative; width: 500px; height: 500px; }
-        .arch-circle { position: absolute; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-align: center; font-weight: bold; color: white; cursor: pointer; transition: all 0.3s; }
-        .arch-circle:hover { transform: scale(1.05); }
+        .arch-circle { position: absolute; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-align: center; font-weight: bold; color: white; transition: opacity 0.2s ease; }
+        .arch-circle:hover { opacity: 1 !important; }
         .domain-circle { width: 150px; height: 150px; background: linear-gradient(135deg, #10b981, #059669); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 4; }
         .application-circle { width: 250px; height: 250px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3; opacity: 0.9; }
         .infrastructure-circle { width: 350px; height: 350px; background: linear-gradient(135deg, #f59e0b, #d97706); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; opacity: 0.8; }
@@ -59,7 +59,7 @@
         .diagram-title { font-size: 1.8em; color: #1e293b; margin-bottom: 30px; text-align: center; }
         
         /* Context Diagram */
-        .context-diagram { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 30px; align-items: center; min-height: 400px; }
+        .context-diagram { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 30px; align-items: center; min-height: 400px; position: relative; }
         .actors { display: flex; flex-direction: column; gap: 20px; }
         .actor { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; padding: 20px; border-radius: 12px; text-align: center; }
         .system-center { display: flex; align-items: center; justify-content: center; }
@@ -67,8 +67,12 @@
         .external-systems { display: flex; flex-direction: column; gap: 20px; }
         .external-system { background: linear-gradient(135deg, #64748b, #475569); color: white; padding: 20px; border-radius: 12px; text-align: center; }
         
+        /* Arrows for Context Diagram */
+        .context-diagram::before { content: '→'; position: absolute; left: 25%; top: 50%; transform: translateY(-50%); font-size: 2em; color: #3b82f6; z-index: 10; }
+        .context-diagram::after { content: '→'; position: absolute; right: 25%; top: 50%; transform: translateY(-50%); font-size: 2em; color: #64748b; z-index: 10; }
+        
         /* Container Diagram */
-        .container-diagram { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+        .container-diagram { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; position: relative; }
         .container-item { background: linear-gradient(135deg, #f8fafc, #e2e8f0); border: 2px solid #e2e8f0; padding: 30px; border-radius: 15px; text-align: center; transition: all 0.3s; }
         .container-item:hover { transform: translateY(-5px); border-color: #3b82f6; }
         .container-item h4 { color: #1e293b; margin-bottom: 15px; }
@@ -77,22 +81,36 @@
         .database { border-left: 6px solid #8b5cf6; }
         .cache { border-left: 6px solid #f59e0b; }
         
+        /* Arrows for Container Diagram */
+        .container-diagram::before { content: '↓'; position: absolute; top: 25%; left: 50%; transform: translateX(-50%); font-size: 2em; color: #10b981; z-index: 10; }
+        .container-diagram::after { content: '↓'; position: absolute; bottom: 25%; left: 50%; transform: translateX(-50%); font-size: 2em; color: #8b5cf6; z-index: 10; }
+        
         /* Component Diagram */
-        .component-diagram { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .component-diagram { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; position: relative; }
         .component-layer { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
         .layer-presentation { border-top: 4px solid #ef4444; }
         .layer-application { border-top: 4px solid #8b5cf6; }
-        .layer-infrastructure { border-top: 4px solid #f59e0b; }
         .layer-domain { border-top: 4px solid #10b981; }
+        .layer-infrastructure { border-top: 4px solid #f59e0b; }
         .component-item { background: #f8fafc; padding: 10px; margin: 8px 0; border-radius: 6px; font-size: 0.9em; text-align: center; }
         
+        /* Dependency Arrows */
+        .component-diagram .arrow { position: absolute; font-size: 1.5em; color: #64748b; }
+        .component-diagram .arrow-1 { top: 50%; left: 12.5%; content: '→'; }
+        .component-diagram .arrow-2 { top: 50%; left: 37.5%; content: '→'; }
+        .component-diagram .arrow-3 { top: 50%; left: 62.5%; content: '→'; }
+        
         /* Code Diagram */
-        .code-diagram { display: flex; justify-content: center; align-items: center; }
+        .code-diagram { display: flex; justify-content: center; align-items: center; position: relative; }
         .class-diagram { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 900px; }
         .class-box { background: white; border: 2px solid #e2e8f0; border-radius: 10px; overflow: hidden; }
         .class-header { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 15px; text-align: center; font-weight: bold; }
         .class-body { padding: 15px; }
         .class-method { background: #f8fafc; padding: 8px; margin: 5px 0; border-radius: 4px; font-size: 0.85em; }
+        
+        /* Class Relationships */
+        .code-diagram::before { content: 'uses →'; position: absolute; top: 30%; left: 20%; font-size: 1.2em; color: #8b5cf6; }
+        .code-diagram::after { content: 'uses →'; position: absolute; top: 30%; right: 20%; font-size: 1.2em; color: #8b5cf6; }
         
         /* Architecture Cards */
         .arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin: 50px 0; }
@@ -147,10 +165,13 @@
             .component-diagram { grid-template-columns: repeat(2, 1fr); }
             .class-diagram { grid-template-columns: 1fr; }
             .arch-circles { width: 300px; height: 300px; }
-            .domain-circle { width: 100px; height: 100px; }
+            .domain-circle { width: 100px; height: 100px; font-size: 0.8em; }
             .application-circle { width: 150px; height: 150px; }
             .infrastructure-circle { width: 200px; height: 200px; }
             .presentation-circle { width: 250px; height: 250px; }
+            .context-diagram::before, .context-diagram::after { display: none; }
+            .container-diagram::before, .container-diagram::after { display: none; }
+            .code-diagram::before, .code-diagram::after { display: none; }
         }
     </style>
 </head>
@@ -297,6 +318,13 @@
                                         <p>Envía notificaciones</p>
                                     </div>
                                 </div>
+                                
+                                <!-- Multiple arrows -->
+                                <div style="position: absolute; top: 30%; left: 28%; font-size: 1.8em; color: #3b82f6;">→</div>
+                                <div style="position: absolute; top: 70%; left: 28%; font-size: 1.8em; color: #3b82f6;">→</div>
+                                <div style="position: absolute; top: 25%; right: 28%; font-size: 1.8em; color: #64748b;">←</div>
+                                <div style="position: absolute; top: 50%; right: 28%; font-size: 1.8em; color: #64748b;">←</div>
+                                <div style="position: absolute; top: 75%; right: 28%; font-size: 1.8em; color: #64748b;">←</div>
                             </div>
                         </div>
                     </div>
@@ -329,6 +357,12 @@
                                     <p><strong>Tecnología:</strong> Redis</p>
                                     <p><strong>Función:</strong> Cache de sesiones y búsquedas frecuentes</p>
                                 </div>
+                                
+                                <!-- Multiple connection arrows -->
+                                <div style="position: absolute; top: 25%; left: 50%; transform: translateX(-50%); font-size: 1.8em; color: #10b981;">↓</div>
+                                <div style="position: absolute; top: 50%; left: 25%; transform: translateY(-50%); font-size: 1.8em; color: #8b5cf6;">↓</div>
+                                <div style="position: absolute; top: 50%; right: 25%; transform: translateY(-50%); font-size: 1.8em; color: #f59e0b;">↓</div>
+                                <div style="position: absolute; bottom: 25%; left: 50%; transform: translateX(-50%); font-size: 1.8em; color: #64748b;">↔</div>
                             </div>
                         </div>
                     </div>
@@ -369,6 +403,15 @@
                                     <div class="component-item">Payment Service</div>
                                     <div class="component-item">External APIs</div>
                                 </div>
+                                
+                                <!-- Dependency Arrows -->
+                                <div style="position: absolute; top: 50%; left: 12.5%; transform: translateY(-50%); font-size: 1.5em; color: #ef4444;">→</div>
+                                <div style="position: absolute; top: 50%; left: 37.5%; transform: translateY(-50%); font-size: 1.5em; color: #8b5cf6;">→</div>
+                                <div style="position: absolute; top: 50%; left: 62.5%; transform: translateY(-50%); font-size: 1.5em; color: #10b981;">→</div>
+                                <!-- Additional arrows -->
+                                <div style="position: absolute; top: 30%; left: 28%; font-size: 1.2em; color: #ef4444;">↓</div>
+                                <div style="position: absolute; top: 30%; left: 53%; font-size: 1.2em; color: #8b5cf6;">↓</div>
+                                <div style="position: absolute; top: 30%; left: 78%; font-size: 1.2em; color: #f59e0b;">↑</div>
                             </div>
                         </div>
                     </div>
@@ -411,6 +454,12 @@
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <!-- Enhanced class relationships -->
+                                <div style="position: absolute; top: 25%; left: 18%; font-size: 1.1em; color: #8b5cf6;">uses →</div>
+                                <div style="position: absolute; top: 25%; right: 18%; font-size: 1.1em; color: #8b5cf6;">← uses</div>
+                                <div style="position: absolute; bottom: 25%; left: 35%; font-size: 1.1em; color: #10b981;">creates ↑</div>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.1em; color: #f59e0b;">depends ↕</div>
                             </div>
                         </div>
                     </div>
