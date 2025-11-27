@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Biblioteca Digital - Clean Architecture</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        
+        /* Hero Section */
+        .hero { text-align: center; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; padding: 80px 20px; border-radius: 16px; margin-bottom: 40px; box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3); }
+        .hero h1 { font-size: 4em; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .hero .subtitle { font-size: 1.5em; margin-bottom: 30px; opacity: 0.9; }
+        .hero .description { font-size: 1.2em; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto; }
+        
+        /* Buttons */
+        .btn { display: inline-block; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 15px 30px; text-decoration: none; border-radius: 10px; margin: 10px; font-weight: 600; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4); transition: all 0.3s; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(16, 185, 129, 0.6); }
+        .btn-secondary { background: linear-gradient(135deg, #8b5cf6, #7c3aed); box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4); }
+        .btn-secondary:hover { box-shadow: 0 12px 25px rgba(139, 92, 246, 0.6); }
+        
+        /* Architecture Cards */
+        .architecture-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin: 50px 0; }
+        .arch-card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.3s; position: relative; overflow: hidden; }
+        .arch-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); }
+        .arch-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; }
+        .domain::before { background: linear-gradient(90deg, #10b981, #059669); }
+        .application::before { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
+        .infrastructure::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .presentation::before { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        
+        .arch-card h3 { font-size: 1.5em; margin-bottom: 15px; color: #1e293b; }
+        .arch-card .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 600; color: white; margin-bottom: 15px; }
+        .domain .badge { background: #10b981; }
+        .application .badge { background: #8b5cf6; }
+        .infrastructure .badge { background: #f59e0b; }
+        .presentation .badge { background: #ef4444; }
+        
+        /* Sections */
+        .section { margin: 60px 0; }
+        .section h2 { font-size: 2.5em; color: #1e293b; margin-bottom: 30px; text-align: center; position: relative; }
+        .section h2::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: linear-gradient(90deg, #3b82f6, #1d4ed8); border-radius: 2px; }
+        
+        /* Features Grid */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .feature-item { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); border-left: 5px solid #3b82f6; }
+        .feature-item h4 { color: #1e293b; margin-bottom: 10px; }
+        
+        /* C4 Model */
+        .c4-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .c4-item { background: white; padding: 25px; border-radius: 12px; text-align: center; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); }
+        .c4-item .icon { font-size: 3em; margin-bottom: 15px; }
+        .c4-item h4 { color: #1e293b; margin-bottom: 10px; }
+        
+        /* Tech Stack */
+        .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .tech-item { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05); border-left: 4px solid #3b82f6; }
+        .tech-item strong { color: #1e293b; }
+        
+        /* Benefits */
+        .benefits { background: linear-gradient(135deg, #f8fafc, #e2e8f0); padding: 40px; border-radius: 16px; margin: 40px 0; }
+        .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .benefit-item { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05); }
+        .benefit-item .emoji { font-size: 2em; margin-bottom: 10px; }
+        
+        /* Footer */
+        .footer { background: linear-gradient(135deg, #1e293b, #334155); color: white; padding: 50px 20px; border-radius: 16px; text-align: center; margin-top: 60px; }
+        .footer h3 { margin-bottom: 20px; }
+        .footer p { opacity: 0.9; margin-bottom: 30px; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5em; }
+            .hero .subtitle { font-size: 1.2em; }
+            .architecture-grid { grid-template-columns: 1fr; }
+            .arch-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>📚 Biblioteca Digital</h1>
+            <div class="subtitle">Clean Architecture + Modelo C4</div>
+            <div class="description">
+                Sistema completo de gestión de bibliotecas digitales implementando los principios de 
+                <strong>Arquitectura Limpia</strong> de Robert C. Martin y documentado con el <strong>Modelo C4</strong>
+            </div>
+            <a href="https://github.com/Edwinramirezgon/biblioteca-digital-clean-architecture" class="btn">🚀 Ver Código Completo</a>
+            <a href="#arquitectura" class="btn btn-secondary">📖 Explorar Arquitectura</a>
+        </div>
+
+        <!-- Arquitectura Section -->
+        <div class="section" id="arquitectura">
+            <h2>🏗️ Arquitectura en Capas Concéntricas</h2>
+            <div class="architecture-grid">
+                <div class="arch-card domain">
+                    <div class="badge">CORE</div>
+                    <h3>🎯 Capa de Dominio</h3>
+                    <p><strong>Entidades:</strong> User, Book, Loan, Reservation</p>
+                    <p><strong>Responsabilidad:</strong> Reglas de negocio puras e invariantes del dominio</p>
+                    <p><strong>Dependencias:</strong> NINGUNA - Completamente independiente</p>
+                </div>
+                
+                <div class="arch-card application">
+                    <div class="badge">USE CASES</div>
+                    <h3>📋 Capa de Aplicación</h3>
+                    <p><strong>Casos de Uso:</strong> BorrowBook, SearchBooks, ReserveBook</p>
+                    <p><strong>Responsabilidad:</strong> Orquestación y lógica de aplicación</p>
+                    <p><strong>Dependencias:</strong> Solo hacia el dominio</p>
+                </div>
+                
+                <div class="arch-card infrastructure">
+                    <div class="badge">ADAPTERS</div>
+                    <h3>🔧 Capa de Infraestructura</h3>
+                    <p><strong>Implementaciones:</strong> Repositorios PostgreSQL, servicios externos</p>
+                    <p><strong>Responsabilidad:</strong> Detalles técnicos y comunicación externa</p>
+                    <p><strong>Dependencias:</strong> Hacia aplicación y dominio (vía interfaces)</p>
+                </div>
+                
+                <div class="arch-card presentation">
+                    <div class="badge">UI/API</div>
+                    <h3>🖥️ Capa de Presentación</h3>
+                    <p><strong>Componentes:</strong> Controllers, Routes, Middleware</p>
+                    <p><strong>Responsabilidad:</strong> Interfaz con el mundo exterior</p>
+                    <p><strong>Dependencias:</strong> Solo hacia casos de uso</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modelo C4 Section -->
+        <div class="section">
+            <h2>📊 Modelo C4 - Documentación en 4 Niveles</h2>
+            <div class="c4-grid">
+                <div class="c4-item">
+                    <div class="icon">🌍</div>
+                    <h4>Nivel 1: Contexto</h4>
+                    <p>Sistema en su entorno con actores (Lectores, Admins) y sistemas externos</p>
+                </div>
+                <div class="c4-item">
+                    <div class="icon">📦</div>
+                    <h4>Nivel 2: Contenedores</h4>
+                    <p>Arquitectura de alto nivel: Web App, API REST, Database, Cache</p>
+                </div>
+                <div class="c4-item">
+                    <div class="icon">🔧</div>
+                    <h4>Nivel 3: Componentes</h4>
+                    <p>Componentes detallados por cada capa de Clean Architecture</p>
+                </div>
+                <div class="c4-item">
+                    <div class="icon">💻</div>
+                    <h4>Nivel 4: Código</h4>
+                    <p>Diagramas de clases, interfaces y patrones implementados</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Funcionalidades Section -->
+        <div class="section">
+            <h2>✅ Funcionalidades Implementadas</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h4>🔍 Búsqueda Avanzada</h4>
+                    <p>Búsqueda de libros con múltiples criterios: título, autor, género, formato</p>
+                </div>
+                <div class="feature-item">
+                    <h4>📚 Préstamos Inteligentes</h4>
+                    <p>Gestión de préstamos físicos y digitales con validaciones de negocio</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🔖 Sistema de Reservas</h4>
+                    <p>Reservas automáticas con notificaciones por email cuando están disponibles</p>
+                </div>
+                <div class="feature-item">
+                    <h4>👑 Membresías Premium</h4>
+                    <p>Beneficios adicionales, límites extendidos y acceso a contenido exclusivo</p>
+                </div>
+                <div class="feature-item">
+                    <h4>📊 Historial Completo</h4>
+                    <p>Seguimiento detallado de préstamos, devoluciones y actividad del usuario</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🔧 Panel Administrativo</h4>
+                    <p>Gestión de inventario, usuarios, políticas y generación de reportes</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Principios SOLID -->
+        <div class="benefits">
+            <h2 style="color: #1e293b; margin-bottom: 30px;">⚡ Principios SOLID Aplicados</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="emoji">🎯</div>
+                    <h4>Single Responsibility</h4>
+                    <p>Cada clase tiene una sola razón para cambiar</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="emoji">🔓</div>
+                    <h4>Open/Closed</h4>
+                    <p>Abierto para extensión, cerrado para modificación</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="emoji">🔄</div>
+                    <h4>Liskov Substitution</h4>
+                    <p>Objetos intercambiables sin alterar funcionamiento</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="emoji">🔌</div>
+                    <h4>Interface Segregation</h4>
+                    <p>Interfaces específicas y cohesivas</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="emoji">🔄</div>
+                    <h4>Dependency Inversion</h4>
+                    <p>Dependencias hacia abstracciones, no concreciones</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stack Tecnológico -->
+        <div class="section">
+            <h2>🚀 Stack Tecnológico</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <strong>Backend:</strong><br>Node.js + TypeScript + Express
+                </div>
+                <div class="tech-item">
+                    <strong>Base de datos:</strong><br>PostgreSQL + Redis
+                </div>
+                <div class="tech-item">
+                    <strong>Testing:</strong><br>Jest + Supertest + Coverage
+                </div>
+                <div class="tech-item">
+                    <strong>Servicios:</strong><br>Stripe + SendGrid + AWS S3
+                </div>
+                <div class="tech-item">
+                    <strong>Documentación:</strong><br>VitePress + Mermaid
+                </div>
+                <div class="tech-item">
+                    <strong>CI/CD:</strong><br>GitHub Actions + Pages
+                </div>
+            </div>
+        </div>
+
+        <!-- Testing -->
+        <div class="section">
+            <h2>🧪 Testing Comprehensivo</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h4>⚡ Tests Unitarios</h4>
+                    <p>Entidades de dominio y casos de uso con mocks completos</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🔗 Tests de Integración</h4>
+                    <p>Repositorios con base de datos real y validación de flujos</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🌐 Tests E2E</h4>
+                    <p>API completa con casos de uso reales de principio a fin</p>
+                </div>
+                <div class="feature-item">
+                    <h4>📊 Coverage</h4>
+                    <p>Cobertura >80% con CI/CD automatizado y reportes detallados</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <h3>🎯 Proyecto Completo de Clean Architecture</h3>
+            <p>
+                Implementación profesional siguiendo principios SOLID • Modelo C4 documentado • 
+                Testing comprehensivo • Casos de uso reales funcionando
+            </p>
+            <a href="https://github.com/Edwinramirezgon/biblioteca-digital-clean-architecture" class="btn">Ver Código en GitHub</a>
+            <p style="margin-top: 30px; opacity: 0.8; font-size: 0.9em;">
+                Desarrollado como demostración de Clean Architecture y mejores prácticas de desarrollo de software
+            </p>
+        </div>
+    </div>
+</body>
+</html>
